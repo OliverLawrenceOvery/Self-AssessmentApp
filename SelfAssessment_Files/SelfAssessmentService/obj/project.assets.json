@@ -5726,11 +5726,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj",
+      "projectUniqueName": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj",
       "projectName": "SelfAssessmentService_Domain",
-      "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj",
+      "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj",
       "packagesPath": "C:\\Users\\olawr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService\\obj\\",
+      "outputPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

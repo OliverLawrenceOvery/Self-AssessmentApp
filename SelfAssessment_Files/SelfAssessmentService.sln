@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfAssessmentService_Domain", "SelfAssessmentService\SelfAssessmentService_Domain.csproj", "{B43E27E6-6B9A-4681-A229-29391245B38B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfAssessmentService_Domain", "SelfAssessmentService\SelfAssessmentService_Domain.csproj", "{B43E27E6-6B9A-4681-A229-29391245B38B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfAssessmentService_EntityFramework", "SelfAssessmentService_EntityFramework\SelfAssessmentService_EntityFramework.csproj", "{E72D1CD6-81A9-469F-8510-8BC3B6DDCE8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfAssessmentService_EntityFramework", "SelfAssessmentService_EntityFramework\SelfAssessmentService_EntityFramework.csproj", "{E72D1CD6-81A9-469F-8510-8BC3B6DDCE8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfAssessmentService_Tests", "SelfAssessmentService_Tests\SelfAssessmentService_Tests.csproj", "{349DCD10-B2F1-4E64-870A-C65C5DD87951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfAssessmentService_Tests", "SelfAssessmentService_Tests\SelfAssessmentService_Tests.csproj", "{349DCD10-B2F1-4E64-870A-C65C5DD87951}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfAssessmentService_WPF", "SelfAssessmentService_WPF\SelfAssessmentService_WPF.csproj", "{8CF933B9-A65E-4766-8C74-89E26EF13CB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{349DCD10-B2F1-4E64-870A-C65C5DD87951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{349DCD10-B2F1-4E64-870A-C65C5DD87951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{349DCD10-B2F1-4E64-870A-C65C5DD87951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CF933B9-A65E-4766-8C74-89E26EF13CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CF933B9-A65E-4766-8C74-89E26EF13CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CF933B9-A65E-4766-8C74-89E26EF13CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CF933B9-A65E-4766-8C74-89E26EF13CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

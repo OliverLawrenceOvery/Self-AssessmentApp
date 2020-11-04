@@ -5746,11 +5746,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
+      "projectUniqueName": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
       "projectName": "SelfAssessmentService_EntityFramework",
-      "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
+      "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
       "packagesPath": "C:\\Users\\olawr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService_EntityFramework\\obj\\",
+      "outputPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_EntityFramework\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5769,8 +5769,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj": {
-              "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj"
+            "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj": {
+              "projectPath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService\\SelfAssessmentService_Domain.csproj"
             }
           }
         }

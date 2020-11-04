@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3OnzD+GDt/MpHRPfkWzWQQpNgDll4XeD5VlIMtiXKOi67/+1Y3HIbyKuLHhGufXF6vSvBmpim2BWTaLc7ozK1w==",
+  "dgSpecHash": "H4c2UIJU+Jc2eL/694sx/l5GxcRdcwuojSQ8oQYhUV/x7SCzrUY6bE2440uEhleLpcOuo6gPVoYqYLYunw45pA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
+  "projectFilePath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_EntityFramework\\SelfAssessmentService_EntityFramework.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
