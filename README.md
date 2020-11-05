@@ -1,20 +1,20 @@
 # Self-AssessmentApp
 Self-Assessment Revision Aid using Entity Framework and WPF
 
-##Sprint 1
+## Sprint 1
 
-###Sprint Review
+### Sprint Review
 
-###Sprint Retrospective
+### Sprint Retrospective
 
-##Sprint 2
+## Sprint 2
 
-###Sprint Review
+### Sprint Review
 
-###Sprint Retrospective
+### Sprint Retrospective
 
-##Sprint 3
+## Sprint 3
 
-###Sprint Review
+### Sprint Review
 
-###Sprint Retrospective
+### Sprint Retrospective
