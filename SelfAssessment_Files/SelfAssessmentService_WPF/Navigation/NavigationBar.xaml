@@ -11,9 +11,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <!--<Grid.Resources>
+            <Grid.Resources>
                 <Style TargetType="RadioButton" BasedOn="{StaticResource NavigationButton}"/>
-            </Grid.Resources>-->
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
