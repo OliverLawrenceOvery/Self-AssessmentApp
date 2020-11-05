@@ -228,8 +228,9 @@ C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.csprojAssemblyReference.cache
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.AssemblyInfoInputs.cache
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.AssemblyInfo.cs
-C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.csproj.CoreCompileInputs.cache
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.csproj.CopyComplete
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.dll
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.pdb
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\obj\Debug\netcoreapp3.1\SelfAssessmentService_Tests.genruntimeconfig.cache
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_Tests\bin\Debug\netcoreapp3.1\Moq.dll

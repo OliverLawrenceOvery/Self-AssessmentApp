@@ -9,13 +9,13 @@ namespace SelfAssessmentService_WPF.Commands
 {
     public class UpdateCurrentViewCommand : ICommand
     {
+        public event EventHandler CanExecuteChanged;
         private INavigator _navigator;
+
         public UpdateCurrentViewCommand(INavigator navigator)
         {
             _navigator = navigator;
         }
-
-        public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
