@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
     <Folder Include="Styles\" />
   </ItemGroup>
 

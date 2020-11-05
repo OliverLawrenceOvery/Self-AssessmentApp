@@ -1,4 +1,5 @@
-﻿using SelfAssessmentService_WPF.ViewModels;
+﻿using SelfAssessmentService_WPF.State.Navigator;
+using SelfAssessmentService_WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,8 +17,10 @@ namespace SelfAssessmentService_WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            INavigator navigator = new Navigator();
+
             Window window = new MainWindow();
-            window.DataContext = new MainViewModel();
+            window.DataContext = new MainViewModel(navigator);
             window.Show();
             base.OnStartup(e);
         }

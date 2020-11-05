@@ -1,8 +1,10 @@
-﻿using SelfAssessmentService_WPF.ViewModels;
+﻿using SelfAssessmentService_WPF.Commands;
+using SelfAssessmentService_WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows.Input;
 
 namespace SelfAssessmentService_WPF.State.Navigator
 {
@@ -27,5 +29,9 @@ namespace SelfAssessmentService_WPF.State.Navigator
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public ICommand UpdateCurrentViewCommand => new UpdateCurrentViewCommand(this);
+
+
     }
 }

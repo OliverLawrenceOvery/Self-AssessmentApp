@@ -9,10 +9,10 @@ namespace SelfAssessmentService_WPF.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public MainViewModel()
+        public MainViewModel(INavigator navigator)
         {
-            UpdateCurrentViewCommand = new UpdateCurrentViewCommand();
-            UpdateCurrentViewCommand.Execute(ViewType.Home);
+            UpdateCurrentViewCommand = new UpdateCurrentViewCommand(navigator);
+            //UpdateCurrentViewCommand.Execute(ViewType.Home);
         }
 
         public INavigator Navigator { get; set; } = new Navigator();
