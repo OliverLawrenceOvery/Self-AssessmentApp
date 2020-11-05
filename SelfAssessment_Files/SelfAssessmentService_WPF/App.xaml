@@ -1,8 +1,23 @@
 ﻿<Application x:Class="SelfAssessmentService_WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SelfAssessmentService_WPF">
+             xmlns:local="clr-namespace:SelfAssessmentService_WPF"
+             xmlns:viewmodels="clr-namespace:SelfAssessmentService_WPF.ViewModels"
+             xmlns:views="clr-namespace:SelfAssessmentService_WPF.Views">
     <Application.Resources>
-       
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ProfileViewModel}">
+                <views:ProfileView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:ResourceViewModel}">
+                <views:ResourceView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:TestViewModel}">
+                <views:TestView/>
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
