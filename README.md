@@ -17,8 +17,10 @@ Once migrated to the database, it was necessary to develop CRUD services to faci
 Attention was now turned towards developing a basic WPF GUI layer, consisting of a navigation bar which would allow the user to switch views as desired. It was decided to follow the MVVM (model-view-view-model) design pattern when structuring the views that the application would support. Such an approach is beneficial because it ensures that the application architecture is loosely coupled, and as such modification of any one aspect out of the view, view model or model will not directly affect the other aspects. Additionally, it ensures that the code is more testable because test cases can be written that do not need to reference the view layer. With this in mind, separate views and view models were created for each of the home, profile, resource and test reviews stipulated in the user stories, and were linked together in the app.xaml file. Before designing the navigation bar, I wanted a class to track and set the current state of the application - in particular, the current view model displayed. To this end, a navigator class was created to achieve this function. The navigation bar was next designed, with each view button on it binded to a command class which could update the current view model on the navigator when clicked on. Finally, as per the appropriate user story, the default view of the application was set to the home view.
 
 
-
 ### Sprint Retrospective
+In summary, this sprint was highly successful: the database was conceived and created according to the specification detailed in the user stories, and an easily extendable, flexible CRUD service was created to manage interactions between visual studio and the database. Structuring the WPF layer to conform to the MVVM design pattern was additionally achieved without any difficulty, however the navigation bar required more careful consideration. For example, ensuring that the home button was highlighted upon application start-up required the creation of an IsChecked binding on each button to achieve this. All user stories were deemed to be satisfied, and preparations have been for made for Sprint 2, such as the development of a framework for authentication unit testing.
+
+
 
 ## Sprint 2
 
