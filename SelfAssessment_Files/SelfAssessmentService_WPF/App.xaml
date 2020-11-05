@@ -6,6 +6,10 @@
              xmlns:views="clr-namespace:SelfAssessmentService_WPF.Views">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Navigation/NavigationBarStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
             <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
                 <views:HomeView/>
             </DataTemplate>

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\App.xaml
-11151548125
+71147141906
 
-3-917710711
+14859461401
 1921654412462
-MainWindow.xaml;
+MainWindow.xaml;Navigation\NavigationBar.xaml;Navigation\NavigationBarStyle.xaml;Views\HomeView.xaml;Views\ProfileView.xaml;Views\ResourceView.xaml;Views\TestView.xaml;
 
 False
 

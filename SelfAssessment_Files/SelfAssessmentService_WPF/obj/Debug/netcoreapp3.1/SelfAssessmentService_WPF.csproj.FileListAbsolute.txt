@@ -17,3 +17,16 @@ C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\SelfAssessmentService_WPF.dll
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\SelfAssessmentService_WPF.pdb
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\SelfAssessmentService_WPF.genruntimeconfig.cache
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Navigation\NavigationBar.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\HomeView.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\ProfileView.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\ResourceView.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\TestView.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\App.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Navigation\NavigationBar.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\HomeView.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\ProfileView.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\ResourceView.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\TestView.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Navigation\NavigationBarStyle.baml

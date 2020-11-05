@@ -30,6 +30,9 @@
     <Page Update="Navigation\NavigationBar.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Navigation\NavigationBarStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\HomeView.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -7,6 +7,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <!--<Grid.Resources>
+                <Style TargetType="RadioButton" BasedOn="{StaticResource NavigationButton}"/>
+            </Grid.Resources>-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <RadioButton Grid.Column="0" Content="Home"/>
+            <RadioButton Grid.Column="1" Content="Profile"/>
+            <RadioButton Grid.Column="2" Content="Resources"/>
+            <RadioButton Grid.Column="3" Content="Tests"/>
+        </Grid>
     </Grid>
 </UserControl>
