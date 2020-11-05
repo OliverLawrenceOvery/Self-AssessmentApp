@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Navigation"
+             xmlns:nav="clr-namespace:SelfAssessmentService_WPF.State.Navigator"
+             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -21,7 +23,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <RadioButton Grid.Column="0" Content="Home"/>
+            <RadioButton Grid.Column="0" Content="Home" Command="{Binding UpdateCurrentViewCommand}" CommandParameter="{x:Static nav:ViewType.Home }"/>
             <RadioButton Grid.Column="1" Content="Profile"/>
             <RadioButton Grid.Column="2" Content="Resources"/>
             <RadioButton Grid.Column="3" Content="Tests"/>

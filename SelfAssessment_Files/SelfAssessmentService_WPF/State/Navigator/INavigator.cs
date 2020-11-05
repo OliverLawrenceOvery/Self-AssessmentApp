@@ -5,6 +5,14 @@ using System.Text;
 
 namespace SelfAssessmentService_WPF.State.Navigator
 {
+    public enum ViewType
+    {
+        Home,
+        Profile,
+        Resources,
+        Tests
+    }
+
     public interface INavigator
     {
         BaseViewModel CurrentViewModel { get; set; }
