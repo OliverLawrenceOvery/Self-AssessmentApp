@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Converters\" />
-    <Folder Include="State\" />
     <Folder Include="Styles\" />
   </ItemGroup>
 

@@ -13,6 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <nav:NavigationBar Grid.Row="0"/>
+        <nav:NavigationBar Grid.Row="0" HorizontalAlignment="Center"/>
+        <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}"/>
     </Grid>
 </Window>
