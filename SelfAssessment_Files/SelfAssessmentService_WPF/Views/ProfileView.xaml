@@ -12,7 +12,7 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="330"/>
+            <ColumnDefinition Width="326"/>
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
 
@@ -28,7 +28,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Ellipse Grid.Row="0" Width="80" Height="80">
                         <Ellipse.Fill>
@@ -45,13 +45,14 @@
 
             <Border Grid.Row="1" Margin="0 -10 0 0" Padding="0 10 0 0">
                 <Grid>
-                    <ListView Name="testResults" ItemsSource="{Binding TestResults}" SelectedItem="{Binding SelectedTestResult}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ListView MaxHeight="200" Name="testResults" ItemsSource="{Binding TestResults}" SelectedItem="{Binding SelectedTestResult}" 
+                              HorizontalAlignment="Left" VerticalAlignment="Top">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Test Results" 
                                     Width="150" DisplayMemberBinding="{Binding Test.TestName}"/>
                                 <GridViewColumn Header="Percentage" 
-                                    Width="150" DisplayMemberBinding="{Binding Mark}"/>
+                                    Width="130" DisplayMemberBinding="{Binding Mark}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -62,10 +63,15 @@
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="250"/>
-                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <oxy1:Plot Grid.Row="0" Title="{Binding Title}" >
+            <Grid Grid.Row="0" Margin="10 20 0 0">
+                <ComboBox HorizontalAlignment="Center" Width="150" Height="25" VerticalAlignment="Top" ItemsSource="{Binding AllTests}"
+                          SelectedItem="{Binding SelectedSeries}"/>
+            </Grid>
+            
+            <oxy1:Plot Grid.Row="1" Margin="0 20 0 0">
                 <oxy1:Plot.Series>
                     <oxy1:LineSeries ItemsSource="{Binding Points, UpdateSourceTrigger=PropertyChanged}"/>
                 </oxy1:Plot.Series>
@@ -81,10 +87,7 @@
                 </oxy1:Plot.Annotations>-->
             </oxy1:Plot>
 
-            <Grid Grid.Row="1">
-                <ComboBox Width="200" Height="25" VerticalAlignment="Top" ItemsSource="{Binding AllTests}" Grid.Row="7" 
-                          SelectedItem="{Binding SelectedSeries}"/>
-            </Grid>
+          
         </Grid>
 
     </Grid>

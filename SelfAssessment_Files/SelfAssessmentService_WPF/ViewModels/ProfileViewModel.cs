@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OxyPlot;
+using OxyPlot.Axes;
 using SelfAssessmentService_Domain.Models;
 using SelfAssessmentService_EntityFramework;
 using SelfAssessmentService_WPF.State.Authenticator;
@@ -49,14 +50,41 @@ namespace SelfAssessmentService_WPF.ViewModels
 
             PlotModel = new PlotModel() { Title = "New Graph" };
             Points = new List<DataPoint>();
-            for (int i = 0; i < 10; i++)
-            {
-                Points.Add(new DataPoint(i, i));
-            }
+
         }
 
         public TestResult SelectedTestResult { get; set; }
         public IList<string> AllTests => Context.TestSeries.Select(q => q.TestSeriesName).ToList();
 
+
+
+        private string _selectedSeries;
+        public string SelectedSeries
+        {
+            get
+            {
+                return _selectedSeries;
+            }
+            set
+            {
+                _selectedSeries = value;
+                TestSeries series = Context.TestSeries.Where(s => s.TestSeriesName == _selectedSeries).FirstOrDefault();
+                PersonalTestResults = Context.TestResults.Include(q => q.Test).ThenInclude(qr => qr.TestSeries)
+                    .Where(r => r.Account.Id == CurrentAccount.Id).Where(e => e.Test.TestSeries.Id == series.Id).ToList();
+                Points = new List<DataPoint>();
+                for (int i = 0; i < PersonalTestResults.Count; i++)
+                {
+                    Points.Add(new DataPoint(i, PersonalTestResults[i].Mark));
+                }
+                PlotModel.Axes.Add(new LinearAxis()
+                {
+                    Position = AxisPosition.Bottom,
+                    Minimum = 1,
+                    Maximum = 2
+                });
+            }
+        }
+
+        public IList<TestResult> PersonalTestResults { get; set; }
     }
 }
