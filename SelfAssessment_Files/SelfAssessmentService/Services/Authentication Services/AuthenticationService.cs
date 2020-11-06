@@ -10,8 +10,8 @@ namespace SelfAssessmentService_Domain.Services.Authentication_Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private IAccountService _accountService;
-        private IPasswordHasher _passwordHasher;
+        private readonly IAccountService _accountService;
+        private readonly IPasswordHasher _passwordHasher;
 
         public AuthenticationService(IAccountService accountService, IPasswordHasher passwordHasher)
         {
@@ -19,14 +19,59 @@ namespace SelfAssessmentService_Domain.Services.Authentication_Services
             _passwordHasher = passwordHasher;
         }
 
-        public Task<Account> Login(string username, string password)
+        public async Task<Account> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            Account storedAccount = await _accountService.GetByUsername(username);
+
+            if (storedAccount == null)
+            {
+                throw new Exception();
+            }
+
+            PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.User.PasswordHashed, password);
+
+            if (passwordResult != PasswordVerificationResult.Success)
+            {
+                throw new Exception();
+            }
+            return storedAccount;
         }
 
-        public Task<RegistrationResult> Register(string username, string password, string confirmPassword)
+        public async Task<RegistrationResult> Register(string username, string password, string confirmPassword)
         {
-            throw new NotImplementedException();
+            RegistrationResult result = RegistrationResult.Success;
+            if (password != confirmPassword)
+            {
+                result = RegistrationResult.PasswordsDoNotMatch;
+            }
+
+            Account usernameAccount = await _accountService.GetByUsername(username);
+
+            if (usernameAccount != null)
+            {
+                result = RegistrationResult.UsernameAlreadyExists;
+            }
+
+            if (result == RegistrationResult.Success)
+            {
+
+                string hashedPassword = _passwordHasher.HashPassword(password);
+
+                User user = new User()
+                {
+                    Username = username,
+                    PasswordHashed = hashedPassword,
+                    DateJoined = DateTime.Now
+                };
+
+                Account account = new Account()
+                {
+                    User = user
+                };
+
+                await _accountService.Create(account);
+            }
+            return result;
         }
     }
 }
