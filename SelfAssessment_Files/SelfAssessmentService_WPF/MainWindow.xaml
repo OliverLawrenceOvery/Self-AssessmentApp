@@ -13,7 +13,19 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <nav:NavigationBar Grid.Row="0" HorizontalAlignment="Center" DataContext="{Binding Navigator}"/>
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Authenticator.IsLoggedIn}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <nav:NavigationBar Grid.Row="0" HorizontalAlignment="Center" DataContext="{Binding Navigator}"/>
+        </Grid>
+        
         <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}"/>
     </Grid>
 </Window>

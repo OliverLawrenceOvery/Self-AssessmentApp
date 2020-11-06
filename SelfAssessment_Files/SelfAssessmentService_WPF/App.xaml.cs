@@ -2,6 +2,7 @@
 using SelfAssessmentService_Domain.Services.Authentication_Services;
 using SelfAssessmentService_Domain.Services.CRUD_Services;
 using SelfAssessmentService_EntityFramework.CRUD_Services;
+using SelfAssessmentService_WPF.State.Authenticator;
 using SelfAssessmentService_WPF.State.Navigator;
 using SelfAssessmentService_WPF.ViewModels;
 using System;
@@ -21,15 +22,18 @@ namespace SelfAssessmentService_WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            INavigator navigator = new Navigator();
-
+            
+         
             IPasswordHasher passwordHasher = new PasswordHasher();
             IAccountService accountService = new AccountDataService();
             IAuthenticationService service = new AuthenticationService(accountService, passwordHasher);
             service.Register("test1", "test1", "test1");
 
+            IAuthenticator authenticator = new Authenticator(service);
+            INavigator navigator = new Navigator(authenticator);
+
             Window window = new MainWindow();
-            window.DataContext = new MainViewModel(navigator);
+            window.DataContext = new MainViewModel(navigator, authenticator);
             window.Show();
             base.OnStartup(e);
         }

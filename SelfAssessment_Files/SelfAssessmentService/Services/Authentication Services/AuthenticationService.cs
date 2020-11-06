@@ -42,14 +42,14 @@ namespace SelfAssessmentService_Domain.Services.Authentication_Services
             RegistrationResult result = RegistrationResult.Success;
             if (password != confirmPassword)
             {
-                result = RegistrationResult.PasswordsDoNotMatch;
+                return RegistrationResult.PasswordsDoNotMatch;
             }
 
             Account usernameAccount = await _accountService.GetByUsername(username);
 
             if (usernameAccount != null)
             {
-                result = RegistrationResult.UsernameAlreadyExists;
+                return RegistrationResult.UsernameAlreadyExists;
             }
 
             if (result == RegistrationResult.Success)

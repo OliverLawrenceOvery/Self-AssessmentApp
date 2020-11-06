@@ -1,4 +1,5 @@
-﻿using SelfAssessmentService_WPF.State.Navigator;
+﻿using SelfAssessmentService_WPF.State.Authenticator;
+using SelfAssessmentService_WPF.State.Navigator;
 using SelfAssessmentService_WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace SelfAssessmentService_WPF.Commands
     {
         public event EventHandler CanExecuteChanged;
         private INavigator _navigator;
+        private IAuthenticator _authenticator;
 
-        public UpdateCurrentViewCommand(INavigator navigator)
+        public UpdateCurrentViewCommand(INavigator navigator, IAuthenticator authenticator)
         {
             _navigator = navigator;
+            _authenticator = authenticator;
         }
 
         public bool CanExecute(object parameter)
@@ -30,10 +33,10 @@ namespace SelfAssessmentService_WPF.Commands
                 switch (viewType)
                 {
                     case ViewType.Login:
-                        _navigator.CurrentViewModel = new LoginViewModel();
+                        _navigator.CurrentViewModel = new LoginViewModel(_authenticator, _navigator);
                         break;
                     case ViewType.Home:
-                        _navigator.CurrentViewModel = new HomeViewModel();
+                        _navigator.CurrentViewModel = new HomeViewModel(_authenticator);
                         break;
                     case ViewType.Profile:
                         _navigator.CurrentViewModel = new ProfileViewModel();

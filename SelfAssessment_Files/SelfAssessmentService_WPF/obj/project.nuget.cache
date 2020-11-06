@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WOqSinq8Dpu80+yQMHm/ZJhc9EGQ4xuYopJ6xxsfhA6Y1HYPTR7RIY2yHIkFX4j75whxCVKaiw07U91Sz4dnDw==",
+  "dgSpecHash": "GeD5WBV6Q1NyJVaRkTAYRJg/DNM5EPV2MeRcQB2eY7IFdr32rIHRkz5pOqvAItyi9ENKXE2rBLoIXwLzd5M7FA==",
   "success": true,
   "projectFilePath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_WPF\\SelfAssessmentService_WPF.csproj",
   "expectedPackageFiles": [
@@ -35,6 +35,7 @@
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\newtonsoft.json\\10.0.1\\newtonsoft.json.10.0.1.nupkg.sha512",
+    "C:\\Users\\olawr\\.nuget\\packages\\prism.core\\8.0.0.1909\\prism.core.8.0.0.1909.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
