@@ -39,7 +39,7 @@ namespace SelfAssessmentService_WPF.Commands
                         _navigator.CurrentViewModel = new HomeViewModel(_authenticator);
                         break;
                     case ViewType.Profile:
-                        _navigator.CurrentViewModel = new ProfileViewModel();
+                        _navigator.CurrentViewModel = new ProfileViewModel(_authenticator);
                         break;
                     case ViewType.Resources:
                         _navigator.CurrentViewModel = new ResourceViewModel();

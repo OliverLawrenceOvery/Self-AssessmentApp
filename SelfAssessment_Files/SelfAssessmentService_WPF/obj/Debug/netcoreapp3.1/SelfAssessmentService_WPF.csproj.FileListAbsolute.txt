@@ -77,3 +77,5 @@ C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\bin\Debug\netcoreapp3.1\Prism.dll
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\bin\Debug\netcoreapp3.1\MaterialDesignColors.dll
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\bin\Debug\netcoreapp3.1\MaterialDesignThemes.Wpf.dll
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\bin\Debug\netcoreapp3.1\OxyPlot.dll
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\bin\Debug\netcoreapp3.1\OxyPlot.Wpf.dll

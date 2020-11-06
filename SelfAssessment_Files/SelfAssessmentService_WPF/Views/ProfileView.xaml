@@ -4,9 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Views"
+             xmlns:oxy1="http://oxyplot.org/wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Profile View"/>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="330"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="10 8 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="160"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Padding="10 0 0 0" BorderThickness="1.5" 
+                    BorderBrush="Black" CornerRadius="2" Background="AliceBlue" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Ellipse Grid.Row="0" Width="80" Height="80">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="/Images/loginpicture1.png" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <materialDesign:PackIcon Grid.Row="1"  Kind="UserBadge" Width="25" Height="25" Foreground="Black"/>
+                    <TextBlock Grid.Row="1" FontSize="16" Text="{Binding CurrentAccount.User.Username}" HorizontalAlignment="Center"/>
+                    
+                    <materialDesign:PackIcon Grid.Row="2"  Kind="Email" Width="25" Height="25" Foreground="Black"/>
+                    <TextBlock Grid.Row="2" FontSize="16" Text="{Binding CurrentAccount.User.Email}" HorizontalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Margin="0 -10 0 0" Padding="0 10 0 0">
+                <Grid>
+                    <ListView Name="testResults" ItemsSource="{Binding TestResults}" SelectedItem="{Binding SelectedTestResult}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Test Results" 
+                                    Width="150" DisplayMemberBinding="{Binding Test.TestName}"/>
+                                <GridViewColumn Header="Percentage" 
+                                    Width="150" DisplayMemberBinding="{Binding Mark}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <oxy1:Plot Grid.Row="0" Title="{Binding Title}" >
+                <oxy1:Plot.Series>
+                    <oxy1:LineSeries ItemsSource="{Binding Points, UpdateSourceTrigger=PropertyChanged}"/>
+                </oxy1:Plot.Series>
+                <oxy1:Plot.Axes>
+                    <oxy1:LinearAxis Position="Bottom" Minimum="0" Maximum="20" />
+                    <oxy1:LinearAxis Position="Left" Minimum="0" Maximum="40" />
+                </oxy1:Plot.Axes>
+                <!--<oxy1:Plot.Annotations>
+                    <oxy1:PointAnnotation X="5" Y="6" Text="Hello"  Visibility="Visible" StrokeThickness="3" 
+                                 Stroke="Black" Size="14">
+
+                    </oxy1:PointAnnotation>
+                </oxy1:Plot.Annotations>-->
+            </oxy1:Plot>
+
+            <Grid Grid.Row="1">
+                <ComboBox Width="200" Height="25" VerticalAlignment="Top" ItemsSource="{Binding AllTests}" Grid.Row="7" 
+                          SelectedItem="{Binding SelectedSeries}"/>
+            </Grid>
+        </Grid>
+
     </Grid>
 </UserControl>
