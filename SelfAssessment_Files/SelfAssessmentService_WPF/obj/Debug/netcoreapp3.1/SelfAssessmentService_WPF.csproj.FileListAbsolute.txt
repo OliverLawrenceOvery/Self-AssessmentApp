@@ -30,3 +30,5 @@ C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\ResourceView.baml
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\TestView.baml
 C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Navigation\NavigationBarStyle.baml
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\LoginView.g.cs
+C:\Users\olawr\OneDrive\Engineering73\SelfAssessmentService\SelfAssessment_Files\SelfAssessmentService_WPF\obj\Debug\netcoreapp3.1\Views\LoginView.baml

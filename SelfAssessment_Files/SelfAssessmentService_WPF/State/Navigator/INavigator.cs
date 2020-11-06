@@ -8,6 +8,7 @@ namespace SelfAssessmentService_WPF.State.Navigator
 {
     public enum ViewType
     {
+        Login,
         Home,
         Profile,
         Resources,

@@ -29,6 +29,9 @@ namespace SelfAssessmentService_WPF.Commands
                 ViewType viewType = (ViewType)parameter;
                 switch (viewType)
                 {
+                    case ViewType.Login:
+                        _navigator.CurrentViewModel = new LoginViewModel();
+                        break;
                     case ViewType.Home:
                         _navigator.CurrentViewModel = new HomeViewModel();
                         break;

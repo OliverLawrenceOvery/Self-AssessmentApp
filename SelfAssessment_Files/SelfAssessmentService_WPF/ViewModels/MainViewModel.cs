@@ -12,7 +12,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         public MainViewModel(INavigator navigator)
         {
             Navigator = navigator;
-            Navigator.UpdateCurrentViewCommand.Execute(ViewType.Home);
+            Navigator.UpdateCurrentViewCommand.Execute(ViewType.Login);
         }
 
         public INavigator Navigator { get; set; }

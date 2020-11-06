@@ -32,8 +32,10 @@
                          Command="{Binding UpdateCurrentViewCommand}" CommandParameter="{x:Static nav:ViewType.Home}" />
             <RadioButton Grid.Column="1" Content="Profile" IsChecked="{Binding CurrentViewModel, Converter={StaticResource EqualValue}, ConverterParameter={x:Type vm:ProfileViewModel}, Mode=OneWay}" 
                          Command="{Binding UpdateCurrentViewCommand}" CommandParameter="{x:Static nav:ViewType.Profile}"/>
-            <RadioButton Grid.Column="2" Content="Resources"/>
-            <RadioButton Grid.Column="3" Content="Tests"/>
+            <RadioButton Grid.Column="2" Content="Resources" IsChecked="{Binding CurrentViewModel, Converter={StaticResource EqualValue}, ConverterParameter={x:Type vm:ResourceViewModel}, Mode=OneWay}" 
+                         Command="{Binding UpdateCurrentViewCommand}" CommandParameter="{x:Static nav:ViewType.Resources}"/>
+            <RadioButton Grid.Column="3" Content="Tests" IsChecked="{Binding CurrentViewModel, Converter={StaticResource EqualValue}, ConverterParameter={x:Type vm:TestViewModel}, Mode=OneWay}" 
+                         Command="{Binding UpdateCurrentViewCommand}" CommandParameter="{x:Static nav:ViewType.Tests}"/>
         </Grid>
     </Grid>
 </UserControl>
