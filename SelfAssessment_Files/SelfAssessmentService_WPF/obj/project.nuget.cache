@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "GeD5WBV6Q1NyJVaRkTAYRJg/DNM5EPV2MeRcQB2eY7IFdr32rIHRkz5pOqvAItyi9ENKXE2rBLoIXwLzd5M7FA==",
+  "dgSpecHash": "Qqz7WuTbkKvn0D6URPP2GLZoMUDuTwYkc+edQk30LmqVSByUT/KQE1prj8iN2fFVv7Zps4hH7wduiczyx41/FA==",
   "success": true,
   "projectFilePath": "C:\\Users\\olawr\\OneDrive\\Engineering73\\SelfAssessmentService\\SelfAssessment_Files\\SelfAssessmentService_WPF\\SelfAssessmentService_WPF.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\olawr\\.nuget\\packages\\materialdesigncolors\\1.2.7\\materialdesigncolors.1.2.7.nupkg.sha512",
+    "C:\\Users\\olawr\\.nuget\\packages\\materialdesignthemes\\3.2.0\\materialdesignthemes.3.2.0.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.3\\microsoft.aspnet.identity.core.2.2.3.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\olawr\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
