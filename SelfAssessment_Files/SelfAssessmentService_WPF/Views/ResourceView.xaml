@@ -30,7 +30,7 @@
                 <ListView Grid.Column="0" Name="topicsListView" ItemsSource="{Binding MainTopics}" SelectedItem="{Binding SelectedMainTopic}" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="List of Resources" 
+                            <GridViewColumn Header="List of Topics" 
                                     DisplayMemberBinding="{Binding Title}"/>
                         </GridView>
                     </ListView.View>

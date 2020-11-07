@@ -23,7 +23,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
-
+            AllTestSeries = Context.TestSeries.Select(ts => ts.TestSeriesName).ToList();
             ListVisibility = Visibility.Visible;
             DescriptionVisibility = Visibility.Visible;
             MainVisibility = Visibility.Collapsed;
@@ -97,61 +97,65 @@ namespace SelfAssessmentService_WPF.ViewModels
             set
             {
                 _searchText = value;
-                QuizList = Context.Tests.Where(q => q.TestName.Contains(value)).ToList();
+                TestList = Context.Tests.Where(q => q.TestName.Contains(value)).ToList();
             }
         }
 
-        private IList<Test> _quizList;
-        public IList<Test> QuizList
+        private IList<Test> _testList;
+        public IList<Test> TestList
         {
             get
             {
-                return _quizList;
+                return _testList;
             }
             set
             {
-                if (string.IsNullOrEmpty(SearchText)) _quizList = null;
-                else _quizList = value;
-                OnPropertyChanged(nameof(QuizList));
+                if (string.IsNullOrEmpty(SearchText)) _testList = null;
+                else _testList = value;
+                OnPropertyChanged(nameof(TestList));
             }
         }
 
-        private Test _selectedQuiz;
-        public Test SelectedQuiz
+        private Test _selectedTest;
+        public Test SelectedTest
         {
             get
             {
-                return _selectedQuiz;
+                return _selectedTest;
             }
             set
             {
-                _selectedQuiz = value;
-                OnPropertyChanged(nameof(SelectedQuiz));
+                _selectedTest = value;
+                OnPropertyChanged(nameof(SelectedTest));
             }
         }
+
+        public List<string> AllTestSeries { get; set; } 
 
         public int CurrentQuestion = 0;
-        public ICommand StartQuizCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
+        public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
         private void FuncToCall(object context)
         {
             ListVisibility = Visibility.Collapsed;
             DescriptionVisibility = Visibility.Collapsed;
             MainVisibility = Visibility.Visible;
             CreateQuestionVisibility = Visibility.Collapsed;
-            Test selectedQuiz = Context.Tests
+            Test selectedTest = Context.Tests
                .Include(e => e.Questions)
                .ThenInclude(e => e.QuestionOptions)
-               .Where(e => e.TestName == SelectedQuiz.TestName)
+               .Where(e => e.TestName == SelectedTest.TestName)
                .First();
-            QuestionName = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionText;
-            QuestionText = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionText;
-            QuestionOptions = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+            QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+            QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+            QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
         }
 
         private bool FuncToEvaluate(object context)
         {
             return true;
         }
+
+
 
         private string _questionName;
         public string QuestionName
@@ -199,13 +203,71 @@ namespace SelfAssessmentService_WPF.ViewModels
 
         public int TotalTestMark { get; set; } = 0;
 
+
+
+
+
+        public string NewTestName { get; set; }
+        public int NewTestMark { get; set; }
+        public string SelectedSeriesForNewTest { get; set; }
+
+        public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4, FuncToEvaluate4);
+        private void FuncToCall4(object context)
+        {
+            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            {
+                TestSeries retrievedSeries = db.TestSeries.Where(q => q.TestSeriesName == SelectedSeriesForNewTest)
+                    .FirstOrDefault();
+                Test newTest = new Test()
+                {
+                    TestName = NewTestName,
+                    TotalMark = NewTestMark,
+                    TestSeries = retrievedSeries
+                };
+                db.Tests.Add(newTest);
+                db.SaveChanges();
+            }
+        }
+
+        private bool FuncToEvaluate4(object context)
+        {
+            return true;
+        }
+
+
+
+        public string NewSeriesName { get; set; }
+
+        public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5, FuncToEvaluate5);
+        private void FuncToCall5(object context)
+        {
+            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            {
+                TestSeries newTestSeries = new TestSeries()
+                {
+                   TestSeriesName = NewSeriesName
+                };
+                db.TestSeries.Add(newTestSeries);
+                db.SaveChanges();
+            }
+        }
+
+        private bool FuncToEvaluate5(object context)
+        {
+            return true;
+        }
+
+
+
+
+
         public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2, FuncToEvaluate2);
         private void FuncToCall2(object context)
         {
-            Test selectedQuiz = Context.Tests
+            Test selectedTest = Context.Tests
                .Include(e => e.Questions)
                .ThenInclude(e => e.QuestionOptions)
-               .Where(e => e.TestName == SelectedQuiz.TestName)
+               .Where(e => e.TestName == SelectedTest.TestName)
                .First();
             if (SelectedOption == null)
             {
@@ -213,16 +275,16 @@ namespace SelfAssessmentService_WPF.ViewModels
                 return;
             }
 
-            if (SelectedOption.OptionText == (selectedQuiz.Questions.ToList())[CurrentQuestion].CorrectAnswer)
+            if (SelectedOption.OptionText == (selectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
             {
-                TotalTestMark += (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionMark;
+                TotalTestMark += (selectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
             }
             CurrentQuestion++;
-            if (CurrentQuestion <= selectedQuiz.Questions.Count() - 1)
+            if (CurrentQuestion <= selectedTest.Questions.Count() - 1)
             {
-                QuestionName = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionText = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionOptions = (selectedQuiz.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+                QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
             }
             else
             {
@@ -238,7 +300,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             return true;
         }
 
-        public IList<string> AllQuizzes => Context.Tests.Select(q => q.TestName).ToList();
+        public IList<string> AllTests => Context.Tests.Select(q => q.TestName).ToList();
 
 
         public string QuestionTextForNewTest { get; set; }
@@ -246,22 +308,22 @@ namespace SelfAssessmentService_WPF.ViewModels
         public string SecondOptionForNewTest { get; set; }
         public string ThirdOptionForNewTest { get; set; }
         public string FourthOptionForNewTest { get; set; }
-        public string SelectedSeriesForNewTest { get; set; }
+        public string SelectedTestForNewQuestion { get; set; }
         public string CorrectAnswerForNewTest { get; set; }
 
-        public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall3, FuncToEvaluate3);
+        public ICommand CreateNewQuestionCommand => new DelegateCommand<object>(FuncToCall3, FuncToEvaluate3);
         private void FuncToCall3(object context)
         {
             using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
-                Test retrievedQuiz = db.Tests.Where(q => q.TestName == SelectedSeriesForNewTest)
+                Test retrievedTest = db.Tests.Where(q => q.TestName == SelectedTestForNewQuestion)
                     .FirstOrDefault();
                 Question newQuestion = new Question()
                 {
                     QuestionText = QuestionTextForNewTest,
                     CorrectAnswer = CorrectAnswerForNewTest,
                     QuestionMark = 10,
-                    Test = retrievedQuiz
+                    Test = retrievedTest
                 };
                 db.Questions.Add(newQuestion);
                 db.SaveChanges();
@@ -274,7 +336,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 db.QuestionOptions.Add(new QuestionOption { OptionText = FourthOptionForNewTest, Question = newQuestion });
                 db.SaveChanges();
             }
-
         }
 
         private bool FuncToEvaluate3(object context)
