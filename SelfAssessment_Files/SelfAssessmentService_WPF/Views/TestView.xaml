@@ -6,7 +6,239 @@
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Test View"/>
+    <Grid Margin="30" HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <WrapPanel Background="White" Grid.Column="0" HorizontalAlignment="Center">
+            <Border BorderBrush="Black" CornerRadius="2" BorderThickness="1.5">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Name="quizViewGrid" Grid.Column="0" Visibility="{Binding ListVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="23"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" FontSize="14" Height="40" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                                     Name="quizFilterBox" />
+                            <TextBlock Grid.Column="0" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Search For Tests" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=quizFilterBox}" 
+                                                         Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <ListView Name="lstRequests" ItemsSource="{Binding QuizList, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Left" SelectedItem="{Binding SelectedQuiz}"
+                                  VerticalAlignment="Top">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="100" Header="Name" 
+                                    DisplayMemberBinding="{Binding TestName}"/>
+                                        <GridViewColumn Width="130" Header="Total Mark" 
+                                    DisplayMemberBinding="{Binding TotalMark}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+
+
+                    <Grid Grid.Column="1" Name="quizDescriptionGrid" Visibility="{Binding DescriptionVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <ListView Grid.Row="0" Name="lstRequests2" HorizontalAlignment="Left" 
+                                  VerticalAlignment="Top">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="135" Header="Description" 
+                                    DisplayMemberBinding="{Binding SelectedQuiz.TestName}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                        <TextBox Name="quizDescription" Grid.Row="1" Text="{Binding SelectedQuiz.TestName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button Background="Black" Visibility="Visible" Grid.Row="2" Name="startQuizButton" 
+                            Content="Start" Command="{Binding StartQuizCommand}"
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="110"/>
+                    </Grid>
+
+
+                    <Grid Grid.Column="2" Name="quizMainGrid" Visibility="{Binding MainVisibility}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox Name="questionName" Padding="2" Grid.Row="0" Text="{Binding QuestionName}" 
+                                 HorizontalContentAlignment="Center"/>
+                        <TextBox Name="questionContent" Padding="3" Grid.Row="1" Text="{Binding QuestionText}"/>
+                        <Grid Grid.Row="2">
+                            <ListView Name="lstRequests3" Padding="3" HorizontalAlignment="Left" 
+                            VerticalAlignment="Top" ItemsSource="{Binding QuestionOptions}"
+                                      SelectedItem="{Binding SelectedOption}">
+                                <ListView.Resources>
+                                    <Style TargetType="GridViewColumnHeader">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </Style>
+                                </ListView.Resources>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="170" 
+                                    DisplayMemberBinding="{Binding OptionText}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                        <Button Visibility="Visible" Grid.Row="3" Name="nextButton" 
+                            Content="Next" Command="{Binding NextQuestionCommand}"
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="70"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </WrapPanel>
+
+
+        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="200" 
+                BorderBrush="Black" BorderThickness="2" Background="White" Margin="10 0 0 0" Padding="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Create Question" TextAlignment="Center"/>
+                <TextBox Grid.Row="1" Text="{Binding QuestionTextForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="questionText" TextWrapping="Wrap" Margin="0 0 0 30"/>
+                <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,30" 
+                                       Text="Question Text" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=questionText}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBox Grid.Row="2" Text="{Binding FirstOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option1Text"/>
+                <TextBlock Grid.Row="2" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="First Option" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=option1Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBox Grid.Row="3" Text="{Binding SecondOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option2Text"/>
+                <TextBlock Grid.Row="3" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Second Option" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=option2Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBox Grid.Row="4" Text="{Binding ThirdOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option3Text"/>
+                <TextBlock Grid.Row="4" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Third Option" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=option3Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBox Grid.Row="5" Text="{Binding FourthOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option4Text"/>
+                <TextBlock Grid.Row="5" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Fourth Option" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=option4Text}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBox Grid.Row="6" Text="{Binding CorrectAnswerForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="correctAnswer" />
+                <TextBlock Grid.Row="6" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Correct Answer" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=correctAnswer}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <ComboBox Text="Hello" ItemsSource="{Binding AllQuizzes}" Grid.Row="7" 
+                          SelectedItem="{Binding SelectedSeriesForNewTest}"/>
+                <Button Grid.Row="8" Content="Submit" Command="{Binding CreateNewTestCommand}"/>
+            </Grid>
+        </Border>
+
+
     </Grid>
 </UserControl>

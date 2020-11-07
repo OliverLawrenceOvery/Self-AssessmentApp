@@ -4,9 +4,160 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="Resource View"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="190"/>
+                    <ColumnDefinition Width="170"/>
+                </Grid.ColumnDefinitions>
+
+                <ListView Grid.Column="0" Name="topicsListView" ItemsSource="{Binding MainTopics}" SelectedItem="{Binding SelectedMainTopic}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="List of Resources" 
+                                    DisplayMemberBinding="{Binding Title}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <ListView Grid.Column="1" Name="subtopicsListView" ItemsSource="{Binding SubTopics}" SelectedItem="{Binding SelectedSubTopic}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="140" Header="Sub-Topics" 
+                                    DisplayMemberBinding="{Binding Title}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+
+            <Border Grid.Row="1" Width="250" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox Grid.Row="0" Text="{Binding CreatedSubTopicTitle, UpdateSourceTrigger=PropertyChanged}" Name="title" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="0" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Title" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=title}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <TextBox Grid.Row="1" Text="{Binding CreatedSubTopicIntro, UpdateSourceTrigger=PropertyChanged}" Name="intro" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Introduction" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=intro}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBox Grid.Row="2" Text="{Binding CreatedSubTopicContent, UpdateSourceTrigger=PropertyChanged}" Name="content" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="2" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Main Content" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=content}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBox Grid.Row="3" Text="{Binding CreatedSubTopicSummary, UpdateSourceTrigger=PropertyChanged}" Name="summary" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="3" IsHitTestVisible="False" Margin="5,0,0,0" 
+                                       Text="Summary" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" Foreground="DarkGray">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=summary}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <Button Grid.Row="4" Content="{Binding CreateOrUpdate}"
+                            Command="{Binding CreateOrUpdateSubTopic}">
+                    </Button>
+                </Grid>
+            </Border>
+
+
+
+        </Grid>
+
+        <Border Margin="0 10 10 10" Grid.Column="1" BorderBrush="Black" CornerRadius="4" BorderThickness="1.5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Padding="10" Grid.Row="0" HorizontalAlignment="Center" FontSize="16" Text="{Binding SelectedSubTopic.Title, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Command="{Binding UpdateCommand}" Background="White" Grid.Row="0" BorderBrush="White" HorizontalAlignment="Left" Margin="10 0 0 0" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Foreground="Black" Kind="Spanner" Width="15" Height="20"/>
+                </Button>
+                <Button Command="{Binding DeleteCommand}" Background="White" Grid.Row="0" BorderBrush="White" HorizontalAlignment="Right" Margin="0 0 10 0" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Foreground="Black" Kind="Bin" Width="15" Height="20"/>
+                </Button>
+
+
+                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Padding="10" Text="{Binding TopicIntroduction}" TextWrapping="Wrap"/>
+                </Border>
+
+                <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Padding="10" Grid.Row="2" Text="{Binding TopicContent}" TextWrapping="Wrap"/>
+                </Border>
+
+                <Border Grid.Row="3" BorderBrush="Black" BorderThickness="1">
+                    <TextBlock Padding="10" Grid.Row="3" Text="{Binding TopicSummary}" TextWrapping="Wrap"/>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
+    
 </UserControl>

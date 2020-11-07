@@ -76,12 +76,21 @@ namespace SelfAssessmentService_WPF.ViewModels
                 {
                     Points.Add(new DataPoint(i, PersonalTestResults[i].Mark));
                 }
-                PlotModel.Axes.Add(new LinearAxis()
-                {
-                    Position = AxisPosition.Bottom,
-                    Minimum = 1,
-                    Maximum = 2
-                });
+                MaximumY = PersonalTestResults.Count - 1;
+            }
+        }
+
+        private int _maximumY;
+        public int MaximumY
+        {
+            get
+            {
+                return _maximumY;
+            }
+            set
+            {
+                _maximumY = value;
+                OnPropertyChanged(nameof(MaximumY));
             }
         }
 

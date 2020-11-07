@@ -45,7 +45,7 @@ namespace SelfAssessmentService_WPF.Commands
                         _navigator.CurrentViewModel = new ResourceViewModel();
                         break;
                     case ViewType.Tests:
-                        _navigator.CurrentViewModel = new TestViewModel();
+                        _navigator.CurrentViewModel = new TestViewModel(_authenticator);
                         break;
                 }
             }

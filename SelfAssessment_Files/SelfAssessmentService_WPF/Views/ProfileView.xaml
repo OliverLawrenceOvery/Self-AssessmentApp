@@ -12,8 +12,8 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="326"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Margin="10 8 0 0">
@@ -50,9 +50,9 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Test Results" 
-                                    Width="150" DisplayMemberBinding="{Binding Test.TestName}"/>
+                                    Width="154" DisplayMemberBinding="{Binding Test.TestName}"/>
                                 <GridViewColumn Header="Percentage" 
-                                    Width="130" DisplayMemberBinding="{Binding Mark}"/>
+                                    Width="150" DisplayMemberBinding="{Binding Mark}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -76,7 +76,7 @@
                     <oxy1:LineSeries ItemsSource="{Binding Points, UpdateSourceTrigger=PropertyChanged}"/>
                 </oxy1:Plot.Series>
                 <oxy1:Plot.Axes>
-                    <oxy1:LinearAxis Position="Bottom" Minimum="0" Maximum="20" />
+                    <oxy1:LinearAxis Position="Bottom" Minimum="0" Maximum="{Binding MaximumY, UpdateSourceTrigger=PropertyChanged}" />
                     <oxy1:LinearAxis Position="Left" Minimum="0" Maximum="40" />
                 </oxy1:Plot.Axes>
                 <!--<oxy1:Plot.Annotations>
