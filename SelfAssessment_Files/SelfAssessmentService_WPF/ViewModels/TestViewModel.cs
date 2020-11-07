@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Prism.Commands;
 using SelfAssessmentService_Domain.Models;
+using SelfAssessmentService_Domain.Services.CRUD_Services;
 using SelfAssessmentService_EntityFramework;
+using SelfAssessmentService_EntityFramework.CRUD_Services;
 using SelfAssessmentService_WPF.State.Authenticator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -23,77 +26,65 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
-            AllTestSeries = Context.TestSeries.Select(ts => ts.TestSeriesName).ToList();
+            _ = GetAllTestSeries();
             ListVisibility = Visibility.Visible;
             DescriptionVisibility = Visibility.Visible;
             MainVisibility = Visibility.Collapsed;
             CreateQuestionVisibility = Visibility.Visible;
         }
 
+        public async Task GetAllTestSeries()
+        {
+            IDataService<TestSeries> service = new GenericDataService<TestSeries>();
+            AllTestSeries = (await service.GetAll()).Select(s => s.TestSeriesName).ToList();
+        }
+
+        private IEnumerable<string> _allTestSeries;
+        public IEnumerable<string> AllTestSeries
+        {
+            get { return _allTestSeries; }
+            set { _allTestSeries = value; OnPropertyChanged(nameof(AllTestSeries)); }
+        }
+
+
+
+
         private Visibility _listVisibility;
         public Visibility ListVisibility
         {
-            get
-            {
-                return _listVisibility;
-            }
-            set
-            {
-                _listVisibility = value;
-                OnPropertyChanged(nameof(ListVisibility));
-            }
+            get { return _listVisibility; }
+            set { _listVisibility = value; OnPropertyChanged(nameof(ListVisibility)); }
         }
 
         private Visibility _descriptionVisibility;
         public Visibility DescriptionVisibility
         {
-            get
-            {
-                return _descriptionVisibility;
-            }
-            set
-            {
-                _descriptionVisibility = value;
-                OnPropertyChanged(nameof(DescriptionVisibility));
-            }
+            get { return _descriptionVisibility; }
+            set { _descriptionVisibility = value; OnPropertyChanged(nameof(DescriptionVisibility)); }
         }
 
         private Visibility _mainVisibility;
         public Visibility MainVisibility
         {
-            get
-            {
-                return _mainVisibility;
-            }
-            set
-            {
-                _mainVisibility = value;
-                OnPropertyChanged(nameof(MainVisibility));
-            }
+            get { return _mainVisibility; }
+            set { _mainVisibility = value; OnPropertyChanged(nameof(MainVisibility)); }
         }
 
         private Visibility _createQuestionVisibility;
         public Visibility CreateQuestionVisibility
         {
-            get
-            {
-                return _createQuestionVisibility;
-            }
-            set
-            {
-                _createQuestionVisibility = value;
-                OnPropertyChanged(nameof(CreateQuestionVisibility));
-            }
+            get { return _createQuestionVisibility; }
+            set { _createQuestionVisibility = value; OnPropertyChanged(nameof(CreateQuestionVisibility)); }
         }
+
+
+
 
 
         private string _searchText;
         public string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get { return _searchText; }
             set
             {
                 _searchText = value;
@@ -104,10 +95,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         private IList<Test> _testList;
         public IList<Test> TestList
         {
-            get
-            {
-                return _testList;
-            }
+            get { return _testList; }
             set
             {
                 if (string.IsNullOrEmpty(SearchText)) _testList = null;
@@ -119,18 +107,13 @@ namespace SelfAssessmentService_WPF.ViewModels
         private Test _selectedTest;
         public Test SelectedTest
         {
-            get
-            {
-                return _selectedTest;
-            }
-            set
-            {
-                _selectedTest = value;
-                OnPropertyChanged(nameof(SelectedTest));
-            }
+            get { return _selectedTest; }
+            set { _selectedTest = value; OnPropertyChanged(nameof(SelectedTest)); }
         }
 
-        public List<string> AllTestSeries { get; set; }
+
+
+
 
         public int CurrentQuestion = 0;
         public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
@@ -140,6 +123,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             DescriptionVisibility = Visibility.Collapsed;
             MainVisibility = Visibility.Visible;
             CreateQuestionVisibility = Visibility.Collapsed;
+            //Could be an overriden getbyId
             Test selectedTest = Context.Tests
                .Include(e => e.Questions)
                .ThenInclude(e => e.QuestionOptions)
@@ -160,43 +144,22 @@ namespace SelfAssessmentService_WPF.ViewModels
         private string _questionName;
         public string QuestionName
         {
-            get
-            {
-                return _questionName;
-            }
-            set
-            {
-                _questionName = value;
-                OnPropertyChanged(nameof(QuestionName));
-            }
+            get { return _questionName; }
+            set { _questionName = value; OnPropertyChanged(nameof(QuestionName)); }
         }
 
         private string _questionText;
         public string QuestionText
         {
-            get
-            {
-                return _questionText;
-            }
-            set
-            {
-                _questionText = value;
-                OnPropertyChanged(nameof(QuestionText));
-            }
+            get { return _questionText; }
+            set { _questionText = value; OnPropertyChanged(nameof(QuestionText)); }
         }
 
         private IList<QuestionOption> _questionOptions;
         public IList<QuestionOption> QuestionOptions
         {
-            get
-            {
-                return _questionOptions;
-            }
-            set
-            {
-                _questionOptions = value;
-                OnPropertyChanged(nameof(QuestionOptions));
-            }
+            get { return _questionOptions; }
+            set { _questionOptions = value; OnPropertyChanged(nameof(QuestionOptions)); }
         }
 
         public QuestionOption SelectedOption { get; set; }
@@ -341,13 +304,9 @@ namespace SelfAssessmentService_WPF.ViewModels
                     Test = retrievedTest
                 };
                 db.Questions.Add(newQuestion);
-                db.SaveChanges();
                 db.QuestionOptions.Add(new QuestionOption { OptionText = FirstOptionForNewTest, Question = newQuestion });
-                db.SaveChanges();
                 db.QuestionOptions.Add(new QuestionOption { OptionText = SecondOptionForNewTest, Question = newQuestion });
-                db.SaveChanges();
                 db.QuestionOptions.Add(new QuestionOption { OptionText = ThirdOptionForNewTest, Question = newQuestion });
-                db.SaveChanges();
                 db.QuestionOptions.Add(new QuestionOption { OptionText = FourthOptionForNewTest, Question = newQuestion });
                 db.SaveChanges();
             }

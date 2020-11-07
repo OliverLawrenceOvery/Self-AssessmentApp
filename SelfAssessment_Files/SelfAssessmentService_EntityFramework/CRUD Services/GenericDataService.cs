@@ -4,6 +4,7 @@ using SelfAssessmentService_Domain.Models;
 using SelfAssessmentService_Domain.Services.CRUD_Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -63,9 +64,14 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
             }
         }
 
-        public virtual async Task<IEnumerable<T>> GetByParameter(int parameter)
+        public virtual async Task<IEnumerable<T>> GetByParameter(IdentityObject parameter)
         {
-            throw new NotImplementedException();
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                IEnumerable<T> entities = await context.Set<T>().Where(t => t.Id == parameter.Id)
+                    .ToListAsync();
+                return entities;
+            }
         }
     }
 }

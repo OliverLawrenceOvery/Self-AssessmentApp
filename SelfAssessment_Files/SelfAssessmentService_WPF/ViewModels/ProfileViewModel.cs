@@ -2,12 +2,15 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using SelfAssessmentService_Domain.Models;
+using SelfAssessmentService_Domain.Services.CRUD_Services;
 using SelfAssessmentService_EntityFramework;
+using SelfAssessmentService_EntityFramework.CRUD_Services;
 using SelfAssessmentService_WPF.State.Authenticator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SelfAssessmentService_WPF.ViewModels
 {
@@ -25,52 +28,66 @@ namespace SelfAssessmentService_WPF.ViewModels
         private IAuthenticator _authenticator;
         public Account CurrentAccount { get; set; }
 
-        public IList<TestResult> TestResults { get; set; }
+
 
         private IList<DataPoint> _points;
         public IList<DataPoint> Points
         {
-            get
-            {
-                return _points;
-            }
-            set
-            {
-                _points = value;
-                OnPropertyChanged(nameof(Points));
-            }
+            get {  return _points;  }
+            set {  _points = value; OnPropertyChanged(nameof(Points)); }
         }
         public ProfileViewModel(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
 
-            TestResults = Context.TestResults.Include(e => e.Test)
-            .Where(e => e.Account.Id == CurrentAccount.Id).ToList();
+            TestResults = Context.TestResults
+                .Include(e => e.Test)
+                .Where(e => e.Account.Id == CurrentAccount.Id).ToList();
 
+            //GetAllTestResults();
             PlotModel = new PlotModel() { Title = "New Graph" };
             Points = new List<DataPoint>();
+        }
+        public IEnumerable<TestResult> TestResults { get; set; }
 
+        public async void GetAllTestResults()
+        {
+            IDataService<TestResult> service = new GenericDataService<TestResult>();
+            TestResults = await service.GetByParameter(CurrentAccount);
         }
 
         public TestResult SelectedTestResult { get; set; }
+
+
+
+
+
+
         public IList<string> AllTests => Context.TestSeries.Select(q => q.TestSeriesName).ToList();
+
+
+
+
+
+
 
 
 
         private string _selectedSeries;
         public string SelectedSeries
         {
-            get
-            {
-                return _selectedSeries;
-            }
+            get {  return _selectedSeries; }
             set
             {
                 _selectedSeries = value;
-                TestSeries series = Context.TestSeries.Where(s => s.TestSeriesName == _selectedSeries).FirstOrDefault();
-                PersonalTestResults = Context.TestResults.Include(q => q.Test).ThenInclude(qr => qr.TestSeries)
-                    .Where(r => r.Account.Id == CurrentAccount.Id).Where(e => e.Test.TestSeries.Id == series.Id).ToList();
+                TestSeries series = Context.TestSeries
+                    .Where(s => s.TestSeriesName == _selectedSeries).FirstOrDefault();
+                List<TestResult> PersonalTestResults = Context.TestResults
+                    .Include(q => q.Test)
+                    .ThenInclude(qr => qr.TestSeries)
+                    .Where(r => r.Account.Id == CurrentAccount.Id)
+                    .Where(e => e.Test.TestSeries.Id == series.Id).ToList();
                 Points = new List<DataPoint>();
                 for (int i = 0; i < PersonalTestResults.Count; i++)
                 {
@@ -83,17 +100,8 @@ namespace SelfAssessmentService_WPF.ViewModels
         private int _maximumY;
         public int MaximumY
         {
-            get
-            {
-                return _maximumY;
-            }
-            set
-            {
-                _maximumY = value;
-                OnPropertyChanged(nameof(MaximumY));
-            }
+            get {  return _maximumY;  }
+            set { _maximumY = value; OnPropertyChanged(nameof(MaximumY)); }
         }
-
-        public IList<TestResult> PersonalTestResults { get; set; }
     }
 }

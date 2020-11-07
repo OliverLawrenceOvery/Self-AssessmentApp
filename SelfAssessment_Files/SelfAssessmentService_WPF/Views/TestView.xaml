@@ -186,7 +186,7 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <ComboBox Grid.Row="3" Text="Hello" ItemsSource="{Binding AllTestSeries}"
+                    <ComboBox Grid.Row="3" Text="Hello" ItemsSource="{Binding AllTestSeries, UpdateSourceTrigger=PropertyChanged}"
                           SelectedItem="{Binding SelectedSeriesForNewTest}"/>
                     <Button Grid.Row="4" Content="Submit" Command="{Binding CreateNewTestCommand}"/>
                 </Grid>
