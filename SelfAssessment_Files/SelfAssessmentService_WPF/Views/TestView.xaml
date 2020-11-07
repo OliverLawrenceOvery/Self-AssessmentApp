@@ -142,7 +142,7 @@
                 </Border>
                 <Border Width="150" Height="200" Padding="5"
                 BorderBrush="Black" BorderThickness="2" Background="White"
-                    VerticalAlignment="Bottom"">
+                    VerticalAlignment="Bottom">
 
                 <Grid Name="quizDescriptionGrid">
                     <Grid.RowDefinitions>
@@ -195,7 +195,7 @@
         </WrapPanel>
 
 
-        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="200" 
+        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="250" 
                 BorderBrush="Black" BorderThickness="2" Background="White" Margin="10 0 0 0" Padding="5">
             <Grid>
                 <Grid.RowDefinitions>

@@ -130,7 +130,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
-        public List<string> AllTestSeries { get; set; } 
+        public List<string> AllTestSeries { get; set; }
 
         public int CurrentQuestion = 0;
         public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
@@ -245,7 +245,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             {
                 TestSeries newTestSeries = new TestSeries()
                 {
-                   TestSeriesName = NewSeriesName
+                    TestSeriesName = NewSeriesName
                 };
                 db.TestSeries.Add(newTestSeries);
                 db.SaveChanges();
@@ -292,6 +292,21 @@ namespace SelfAssessmentService_WPF.ViewModels
                 DescriptionVisibility = Visibility.Visible;
                 MainVisibility = Visibility.Collapsed;
                 CreateQuestionVisibility = Visibility.Visible;
+
+                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+                {
+                    Account myAccount = db.Accounts.Where(a => a.Id == CurrentAccount.Id).FirstOrDefault();
+                    Test currentTest = db.Tests.Where(e => e.TestName == SelectedTest.TestName).FirstOrDefault();
+                    TestResult newTestResult = new TestResult()
+                    {
+                        Test = currentTest,
+                        Account = myAccount,
+                        Mark = TotalTestMark
+                    };
+                    db.TestResults.Add(newTestResult);
+                    db.SaveChanges();
+                }
+
             }
         }
 
