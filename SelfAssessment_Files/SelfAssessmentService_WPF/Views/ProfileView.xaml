@@ -45,7 +45,7 @@
 
             <Border Grid.Row="1" Margin="0 -10 0 0" Padding="0 10 0 0">
                 <Grid>
-                    <ListView MaxHeight="200" Name="testResults" ItemsSource="{Binding TestResults}" SelectedItem="{Binding SelectedTestResult}" 
+                    <ListView MaxHeight="200" Name="testResults" ItemsSource="{Binding TestResults, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedTestResult}" 
                               HorizontalAlignment="Left" VerticalAlignment="Top">
                         <ListView.View>
                             <GridView>

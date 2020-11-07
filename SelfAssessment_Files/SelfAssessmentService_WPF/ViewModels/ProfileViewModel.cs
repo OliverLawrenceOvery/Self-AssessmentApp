@@ -40,37 +40,15 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
-
-            TestResults = Context.TestResults
-                .Include(e => e.Test)
-                .Where(e => e.Account.Id == CurrentAccount.Id).ToList();
-
-            //GetAllTestResults();
             PlotModel = new PlotModel() { Title = "New Graph" };
             Points = new List<DataPoint>();
         }
-        public IEnumerable<TestResult> TestResults { get; set; }
-
-        public async void GetAllTestResults()
-        {
-            IDataService<TestResult> service = new GenericDataService<TestResult>();
-            TestResults = await service.GetByParameter(CurrentAccount);
-        }
+        public IEnumerable<TestResult> TestResults => Context.TestResults.Include(e => e.Test).Where(e => e.Account.Id == CurrentAccount.Id).ToList();
 
         public TestResult SelectedTestResult { get; set; }
 
 
-
-
-
-
         public IList<string> AllTests => Context.TestSeries.Select(q => q.TestSeriesName).ToList();
-
-
-
-
-
-
 
 
 
@@ -81,13 +59,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             set
             {
                 _selectedSeries = value;
-                TestSeries series = Context.TestSeries
-                    .Where(s => s.TestSeriesName == _selectedSeries).FirstOrDefault();
-                List<TestResult> PersonalTestResults = Context.TestResults
-                    .Include(q => q.Test)
-                    .ThenInclude(qr => qr.TestSeries)
-                    .Where(r => r.Account.Id == CurrentAccount.Id)
-                    .Where(e => e.Test.TestSeries.Id == series.Id).ToList();
+                _ = GetPersonalTestResults();
                 Points = new List<DataPoint>();
                 for (int i = 0; i < PersonalTestResults.Count; i++)
                 {
@@ -95,6 +67,18 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
                 MaximumY = PersonalTestResults.Count - 1;
             }
+        }
+        private List<TestResult> _personalTestResults;
+        public List<TestResult> PersonalTestResults
+        {
+            get { return _personalTestResults; }
+            set { _personalTestResults = value; OnPropertyChanged(nameof(PersonalTestResults)); }
+
+        }
+        public async Task GetPersonalTestResults()
+        {
+            ITestResultService service = new TestResultService();
+            PersonalTestResults = await service.GetPersonalTestResults(CurrentAccount, SelectedSeries);
         }
 
         private int _maximumY;

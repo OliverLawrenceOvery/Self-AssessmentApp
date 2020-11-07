@@ -113,30 +113,25 @@ namespace SelfAssessmentService_WPF.ViewModels
 
 
 
-
-
         public int CurrentQuestion = 0;
-        public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
-        private void FuncToCall(object context)
+        public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall);
+        private async void FuncToCall(object context)
         {
             ListVisibility = Visibility.Collapsed;
             DescriptionVisibility = Visibility.Collapsed;
             MainVisibility = Visibility.Visible;
             CreateQuestionVisibility = Visibility.Collapsed;
-            //Could be an overriden getbyId
-            Test selectedTest = Context.Tests
-               .Include(e => e.Questions)
-               .ThenInclude(e => e.QuestionOptions)
-               .Where(e => e.TestName == SelectedTest.TestName)
-               .First();
+            _ = UpdateQuestion();
+        }
+
+        public async Task UpdateQuestion()
+        {
+            ITestService service = new TestDataService();
+            Test selectedTest = await service.Get(SelectedTest.Id);
+            SelectedTest = selectedTest;
             QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
             QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
             QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
-        }
-
-        private bool FuncToEvaluate(object context)
-        {
-            return true;
         }
 
 
@@ -174,80 +169,50 @@ namespace SelfAssessmentService_WPF.ViewModels
         public int NewTestMark { get; set; }
         public string SelectedSeriesForNewTest { get; set; }
 
-        public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4, FuncToEvaluate4);
-        private void FuncToCall4(object context)
+        public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4);
+        private async void FuncToCall4(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            Test newTest = new Test()
             {
-                TestSeries retrievedSeries = db.TestSeries.Where(q => q.TestSeriesName == SelectedSeriesForNewTest)
-                    .FirstOrDefault();
-                Test newTest = new Test()
-                {
-                    TestName = NewTestName,
-                    TotalMark = NewTestMark,
-                    TestSeries = retrievedSeries
-                };
-                db.Tests.Add(newTest);
-                db.SaveChanges();
-            }
+                TestName = NewTestName,
+                TotalMark = NewTestMark,
+            };
+            ITestService service = new TestDataService();
+            await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
         }
 
-        private bool FuncToEvaluate4(object context)
-        {
-            return true;
-        }
 
 
 
         public string NewSeriesName { get; set; }
 
-        public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5, FuncToEvaluate5);
-        private void FuncToCall5(object context)
+        public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5);
+        private async void FuncToCall5(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
-            {
-                TestSeries newTestSeries = new TestSeries()
-                {
-                    TestSeriesName = NewSeriesName
-                };
-                db.TestSeries.Add(newTestSeries);
-                db.SaveChanges();
-            }
-        }
-
-        private bool FuncToEvaluate5(object context)
-        {
-            return true;
+            IDataService<TestSeries> service = new GenericDataService<TestSeries>();
+            await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
         }
 
 
 
 
-
-        public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2, FuncToEvaluate2);
+        public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2);
         private void FuncToCall2(object context)
         {
-            Test selectedTest = Context.Tests
-               .Include(e => e.Questions)
-               .ThenInclude(e => e.QuestionOptions)
-               .Where(e => e.TestName == SelectedTest.TestName)
-               .First();
             if (SelectedOption == null)
             {
                 MessageBox.Show("Please choose an answer");
                 return;
             }
 
-            if (SelectedOption.OptionText == (selectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
+            if (SelectedOption.OptionText == (SelectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
             {
-                TotalTestMark += (selectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
+                TotalTestMark += (SelectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
             }
             CurrentQuestion++;
-            if (CurrentQuestion <= selectedTest.Questions.Count() - 1)
+            if (CurrentQuestion <= SelectedTest.Questions.Count() - 1)
             {
-                QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+                _ = UpdateQuestion();
             }
             else
             {
@@ -255,7 +220,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 DescriptionVisibility = Visibility.Visible;
                 MainVisibility = Visibility.Collapsed;
                 CreateQuestionVisibility = Visibility.Visible;
-
+                CurrentQuestion = 0;
                 using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
                 {
                     Account myAccount = db.Accounts.Where(a => a.Id == CurrentAccount.Id).FirstOrDefault();
@@ -273,11 +238,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
-        private bool FuncToEvaluate2(object context)
-        {
-            return true;
-        }
-
         public IList<string> AllTests => Context.Tests.Select(q => q.TestName).ToList();
 
 
@@ -289,32 +249,22 @@ namespace SelfAssessmentService_WPF.ViewModels
         public string SelectedTestForNewQuestion { get; set; }
         public string CorrectAnswerForNewTest { get; set; }
 
-        public ICommand CreateNewQuestionCommand => new DelegateCommand<object>(FuncToCall3, FuncToEvaluate3);
-        private void FuncToCall3(object context)
+        public ICommand CreateNewQuestionCommand => new DelegateCommand<object>(FuncToCall3);
+        private async void FuncToCall3(object context)
         {
             using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
-                Test retrievedTest = db.Tests.Where(q => q.TestName == SelectedTestForNewQuestion)
-                    .FirstOrDefault();
                 Question newQuestion = new Question()
                 {
                     QuestionText = QuestionTextForNewTest,
                     CorrectAnswer = CorrectAnswerForNewTest,
                     QuestionMark = 10,
-                    Test = retrievedTest
                 };
-                db.Questions.Add(newQuestion);
-                db.QuestionOptions.Add(new QuestionOption { OptionText = FirstOptionForNewTest, Question = newQuestion });
-                db.QuestionOptions.Add(new QuestionOption { OptionText = SecondOptionForNewTest, Question = newQuestion });
-                db.QuestionOptions.Add(new QuestionOption { OptionText = ThirdOptionForNewTest, Question = newQuestion });
-                db.QuestionOptions.Add(new QuestionOption { OptionText = FourthOptionForNewTest, Question = newQuestion });
-                db.SaveChanges();
+                IQuestionService service = new QuestionDataService();
+                await service.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest
+                    , SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
             }
         }
 
-        private bool FuncToEvaluate3(object context)
-        {
-            return true;
-        }
     }
 }
