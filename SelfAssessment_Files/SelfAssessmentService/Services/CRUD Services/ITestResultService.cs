@@ -9,5 +9,7 @@ namespace SelfAssessmentService_Domain.Services.CRUD_Services
     public interface ITestResultService : IDataService<TestResult>
     {
         Task<List<TestResult>> GetPersonalTestResults(Account currentAccount, string selectedSeries);
+
+        Task<TestResult> CreatePersonalTestResult(int id, string testName, TestResult testResult);
     }
 }

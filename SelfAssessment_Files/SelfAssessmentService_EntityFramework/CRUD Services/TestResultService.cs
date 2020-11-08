@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SelfAssessmentService_Domain.Models;
 using SelfAssessmentService_Domain.Services.CRUD_Services;
 using System;
@@ -11,6 +12,20 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
 {
     public class TestResultService : GenericDataService<TestResult>, ITestResultService
     {
+        public async Task<TestResult> CreatePersonalTestResult(int id, string testName, TestResult testResult)
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account account = context.Accounts.Where(a => a.Id == id).FirstOrDefault();
+                Test test = context.Tests.Where(e => e.TestName == testName).FirstOrDefault();
+                testResult.Account = account;
+                testResult.Test = test;
+                EntityEntry<TestResult> createdResult = await context.Set<TestResult>().AddAsync(testResult);
+                await context.SaveChangesAsync();
+                return createdResult.Entity;
+            }
+        }
+
         public async Task<List<TestResult>> GetPersonalTestResults(Account currentAccount, string selectedSeries)
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())

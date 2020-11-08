@@ -10,7 +10,6 @@ namespace SelfAssessmentService_WPF.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-
         public MainViewModel(INavigator navigator, IAuthenticator authenticator)
         {
             Authenticator = authenticator;

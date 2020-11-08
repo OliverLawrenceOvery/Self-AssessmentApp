@@ -35,12 +35,12 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
                 SubTopic retrievedSubTopic = context.SubTopics.Where(st => st.Id == subTopicId).FirstOrDefault();
-                
-                context.Set<SubTopic>().Update(retrievedSubTopic);
                 retrievedSubTopic.Title = subTopicTitle;
                 retrievedSubTopic.Introduction = subTopicIntro;
                 retrievedSubTopic.Content = subTopicContent;
                 retrievedSubTopic.Summary = subTopicSummary;
+
+                context.Set<SubTopic>().Update(retrievedSubTopic);
                 await context.SaveChangesAsync();
 
                 return retrievedSubTopic;

@@ -15,11 +15,7 @@ namespace SelfAssessmentService_WPF.ViewModels
     public class ResourceViewModel : BaseViewModel
     {
         public SelfAssessmentDbContext Context => new SelfAssessmentDbContext();
-        public ResourceViewModel()
-        {
-            MainTopics = Context.MainTopics.ToList();
-            CreateOrUpdate = "Create";
-        }
+        public IList<MainTopic> MainTopics => Context.MainTopics.ToList();
 
         private string _createOrUpdate;
         public string CreateOrUpdate
@@ -27,8 +23,11 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _createOrUpdate; }
             set { _createOrUpdate = value; OnPropertyChanged(nameof(CreateOrUpdate)); }
         }
+        public ResourceViewModel()
+        {
+            CreateOrUpdate = "Create";
+        }
 
-        public IList<MainTopic> MainTopics { get; set; }
 
         private MainTopic _selectedMainTopic;
         public MainTopic SelectedMainTopic
@@ -40,10 +39,18 @@ namespace SelfAssessmentService_WPF.ViewModels
                 SubTopics = Context.SubTopics
                     .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
                     .ToList();
-                OnPropertyChanged(nameof(SubTopics));
             }
         }
-        public IList<SubTopic> SubTopics { get; set; }
+
+        private IList<SubTopic> _subTopics;
+        public IList<SubTopic> SubTopics 
+        {
+            get { return _subTopics; }
+            set { _subTopics = value; OnPropertyChanged(nameof(SubTopics)); } 
+        }
+        public string TopicIntroduction { get; set; }
+        public string TopicContent { get; set; }
+        public string TopicSummary { get; set; }
 
         private SubTopic _selectedSubTopic;
         public SubTopic SelectedSubTopic
@@ -63,11 +70,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
             }
         }
-
-        public string TopicIntroduction { get; set; }
-        public string TopicContent { get; set; }
-        public string TopicSummary { get; set; }
-
 
 
         private string _createdSubTopicTitle;
@@ -108,7 +110,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 SubTopics = Context.SubTopics
                         .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
                         .ToList();
-                OnPropertyChanged(nameof(SubTopics));
             }
             else if (CreateOrUpdate == "Update")
             {
@@ -129,7 +130,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             CreatedSubTopicIntro = TopicIntroduction;
             CreatedSubTopicContent = TopicContent;
             CreatedSubTopicSummary = TopicSummary;
-
             CreateOrUpdate = "Update";
         }
 
@@ -150,7 +150,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             TopicIntroduction = "";
             TopicContent = "";
             TopicSummary = "";
-            OnPropertyChanged(nameof(SubTopics));
         }
 
     }

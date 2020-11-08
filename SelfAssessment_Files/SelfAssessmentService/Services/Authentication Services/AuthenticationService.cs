@@ -25,14 +25,14 @@ namespace SelfAssessmentService_Domain.Services.Authentication_Services
 
             if (storedAccount == null)
             {
-                throw new Exception();
+                throw new Exception(message:username);
             }
 
             PasswordVerificationResult passwordResult = _passwordHasher.VerifyHashedPassword(storedAccount.User.PasswordHashed, password);
 
             if (passwordResult != PasswordVerificationResult.Success)
             {
-                throw new Exception();
+                throw new Exception(message:username);
             }
             return storedAccount;
         }

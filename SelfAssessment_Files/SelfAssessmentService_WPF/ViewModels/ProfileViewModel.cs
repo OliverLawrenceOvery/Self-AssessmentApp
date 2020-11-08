@@ -18,17 +18,15 @@ namespace SelfAssessmentService_WPF.ViewModels
     {
         public SelfAssessmentDbContext Context { get; set; } = new SelfAssessmentDbContext();
 
+        private IAuthenticator _authenticator;
+        public Account CurrentAccount { get; set; }
+
         private PlotModel plotModel;
         public PlotModel PlotModel
         {
             get { return plotModel; }
             set { plotModel = value; OnPropertyChanged("PlotModel"); }
         }
-
-        private IAuthenticator _authenticator;
-        public Account CurrentAccount { get; set; }
-
-
 
         private IList<DataPoint> _points;
         public IList<DataPoint> Points
@@ -44,10 +42,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             Points = new List<DataPoint>();
         }
         public IEnumerable<TestResult> TestResults => Context.TestResults.Include(e => e.Test).Where(e => e.Account.Id == CurrentAccount.Id).ToList();
-
         public TestResult SelectedTestResult { get; set; }
-
-
         public IList<string> AllTests => Context.TestSeries.Select(q => q.TestSeriesName).ToList();
 
 
@@ -68,6 +63,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 MaximumY = PersonalTestResults.Count - 1;
             }
         }
+
         private List<TestResult> _personalTestResults;
         public List<TestResult> PersonalTestResults
         {

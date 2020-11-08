@@ -21,7 +21,6 @@ namespace SelfAssessmentService_WPF.ViewModels
 
         private IAuthenticator _authenticator;
         public Account CurrentAccount { get; set; }
-
         public TestViewModel(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
@@ -115,7 +114,7 @@ namespace SelfAssessmentService_WPF.ViewModels
 
         public int CurrentQuestion = 0;
         public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall);
-        private async void FuncToCall(object context)
+        private void FuncToCall(object context)
         {
             ListVisibility = Visibility.Collapsed;
             DescriptionVisibility = Visibility.Collapsed;
@@ -157,14 +156,9 @@ namespace SelfAssessmentService_WPF.ViewModels
             set { _questionOptions = value; OnPropertyChanged(nameof(QuestionOptions)); }
         }
 
+
         public QuestionOption SelectedOption { get; set; }
-
         public int TotalTestMark { get; set; } = 0;
-
-
-
-
-
         public string NewTestName { get; set; }
         public int NewTestMark { get; set; }
         public string SelectedSeriesForNewTest { get; set; }
@@ -197,7 +191,7 @@ namespace SelfAssessmentService_WPF.ViewModels
 
 
         public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2);
-        private void FuncToCall2(object context)
+        private async void FuncToCall2(object context)
         {
             if (SelectedOption == null)
             {
@@ -221,20 +215,9 @@ namespace SelfAssessmentService_WPF.ViewModels
                 MainVisibility = Visibility.Collapsed;
                 CreateQuestionVisibility = Visibility.Visible;
                 CurrentQuestion = 0;
-                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
-                {
-                    Account myAccount = db.Accounts.Where(a => a.Id == CurrentAccount.Id).FirstOrDefault();
-                    Test currentTest = db.Tests.Where(e => e.TestName == SelectedTest.TestName).FirstOrDefault();
-                    TestResult newTestResult = new TestResult()
-                    {
-                        Test = currentTest,
-                        Account = myAccount,
-                        Mark = TotalTestMark
-                    };
-                    db.TestResults.Add(newTestResult);
-                    db.SaveChanges();
-                }
-
+                TestResult newTestResult = new TestResult() { Mark = TotalTestMark*100/SelectedTest.TotalMark };
+                ITestResultService service = new TestResultService();
+                await service.CreatePersonalTestResult(CurrentAccount.Id, SelectedTest.TestName, newTestResult);
             }
         }
 

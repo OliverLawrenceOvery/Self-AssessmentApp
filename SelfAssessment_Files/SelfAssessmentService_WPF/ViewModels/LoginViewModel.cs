@@ -20,29 +20,15 @@ namespace SelfAssessmentService_WPF.ViewModels
         private string _username;
         public string Username
         {
-            get
-            {
-                return _username;
-            }
-            set
-            {
-                _username = value;
-                OnPropertyChanged(nameof(Username));
-            }
+            get { return _username; }
+            set { _username = value; OnPropertyChanged(nameof(Username)); }
         }
 
         private string _password;
         public string Password
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                _password = value;
-                OnPropertyChanged(nameof(Password));
-            }
+            get { return _password; }
+            set { _password = value; OnPropertyChanged(nameof(Password)); }
         }
 
         public ICommand LoginCommand { get; }
@@ -59,141 +45,79 @@ namespace SelfAssessmentService_WPF.ViewModels
         private Visibility _loginVisibility;
         public Visibility LoginVisibility
         {
-            get
-            {
-                return _loginVisibility;
-            }
-            set
-            {
-                _loginVisibility = value;
-                OnPropertyChanged(nameof(LoginVisibility));
-            }
+            get { return _loginVisibility; }
+            set { _loginVisibility = value; OnPropertyChanged(nameof(LoginVisibility)); }
         }
 
         private Visibility _registerVisibility;
         public Visibility RegisterVisibility
         {
-            get
-            {
-                return _registerVisibility;
-            }
-            set
-            {
-                _registerVisibility = value;
-                OnPropertyChanged(nameof(RegisterVisibility));
-            }
+            get { return _registerVisibility; }
+            set { _registerVisibility = value; OnPropertyChanged(nameof(RegisterVisibility)); }
         }
 
         private Visibility _errorMessageVisibility;
         public Visibility ErrorMessageVisibility
         {
-            get
-            {
-                return _errorMessageVisibility;
-            }
-            set
-            {
-                _errorMessageVisibility = value;
-                OnPropertyChanged(nameof(ErrorMessageVisibility));
-            }
+            get { return _errorMessageVisibility; }
+            set { _errorMessageVisibility = value; OnPropertyChanged(nameof(ErrorMessageVisibility)); }
         }
 
-        public ICommand RegisterCommand => new DelegateCommand<object>(FuncToCall, FuncToEvaluate);
+
+
+
+
+        public ICommand RegisterCommand => new DelegateCommand<object>(FuncToCall);
         private void FuncToCall(object context)
         {
             LoginVisibility = Visibility.Collapsed;
             RegisterVisibility = Visibility.Visible;
         }
 
-        private bool FuncToEvaluate(object context)
-        {
-            return true;
-        }
-
-
-        public ICommand GoBackCommand => new DelegateCommand<object>(FuncToCall2, FuncToEvaluate2);
+        public ICommand GoBackCommand => new DelegateCommand<object>(FuncToCall2);
         private void FuncToCall2(object context)
         {
             LoginVisibility = Visibility.Visible;
             RegisterVisibility = Visibility.Collapsed;
         }
 
-        private bool FuncToEvaluate2(object context)
-        {
-            return true;
-        }
 
         private string _newUsername;
         public string NewUsername
         {
-            get
-            {
-                return _newUsername;
-            }
-            set
-            {
-                _newUsername = value;
-                OnPropertyChanged(nameof(NewUsername));
-            }
+            get { return _newUsername; }
+            set { _newUsername = value; OnPropertyChanged(nameof(NewUsername)); }
         }
 
         private string _newPassword;
         public string NewPassword
         {
-            get
-            {
-                return _newPassword;
-            }
-            set
-            {
-                _newPassword = value;
-                OnPropertyChanged(nameof(NewPassword));
-            }
+            get { return _newPassword; }
+            set { _newPassword = value; OnPropertyChanged(nameof(NewPassword)); }
         }
 
         private string _confirmNewPassword;
         public string ConfirmNewPassword
         {
-            get
-            {
-                return _confirmNewPassword;
-            }
-            set
-            {
-                _confirmNewPassword = value;
-                OnPropertyChanged(nameof(ConfirmNewPassword));
-            }
+            get { return _confirmNewPassword; }
+            set { _confirmNewPassword = value; OnPropertyChanged(nameof(ConfirmNewPassword)); }
         }
 
         private string _email;
         public string Email
         {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-                OnPropertyChanged(nameof(Email));
-            }
+            get { return _email; }
+            set { _email = value; OnPropertyChanged(nameof(Email)); }
         }
 
         private string _errorMessage;
         public string ErrorMessage
         { 
-            get
-            {
-                return _errorMessage;
-            } 
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
+            get { return _errorMessage; }
+            set { _errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); }
         }
 
-        public ICommand CreateAccountCommand => new DelegateCommand<object>(FuncToCall3, FuncToEvaluate3);
+        public ICommand CreateAccountCommand => new DelegateCommand<object>(FuncToCall3);
         private async void FuncToCall3(object context)
         {
             RegistrationResult result = await _authenticator.Register(NewUsername, NewPassword, ConfirmNewPassword);
@@ -213,11 +137,5 @@ namespace SelfAssessmentService_WPF.ViewModels
                 RegisterVisibility = Visibility.Collapsed;
             }
         }
-
-        private bool FuncToEvaluate3(object context)
-        {
-            return true;
-        }
-
     }
 }
