@@ -334,6 +334,19 @@ namespace SelfAssessmentService_Tests
             Test createdTest = await testService.CreateNewTest(test, "TestTestSeries");
             Assert.IsNull(createdTest);
         }
+
+        [Test]
+        public async Task DeleteTestAndAssociatedQuestions()
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Test createdTest = context.Tests
+                    .Where(t => t.TestName == "TestName")
+                    .FirstOrDefault();
+                bool result = await testService.Delete(createdTest.Id);
+                Assert.IsTrue(result);
+            }
+        }
         #endregion
 
 

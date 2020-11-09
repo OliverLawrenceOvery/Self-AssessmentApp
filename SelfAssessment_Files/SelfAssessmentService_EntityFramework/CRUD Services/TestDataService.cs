@@ -42,5 +42,45 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
             }
         }
 
+        public override async Task<bool> Delete(int testId)
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                List<QuestionOption> questionOptionsToDelete = await context.QuestionOptions
+                    .Include(q => q.Question)
+                    .ThenInclude(q => q.Test)
+                    .Where(q => q.Question.Test.Id == testId)
+                    .ToListAsync();
+                foreach (var questionOption in questionOptionsToDelete)
+                {
+                    context.QuestionOptions.Remove(questionOption);
+                }
+
+                List<Question> questionsToDelete = await context.Questions
+                    .Include(q => q.Test)
+                    .Where(q => q.Test.Id == testId)
+                    .ToListAsync();
+                foreach (var question in questionsToDelete)
+                {
+                    context.Questions.Remove(question);
+                }
+
+                List<TestResult> resultsToDelete = await context.TestResults
+                    .Include(q => q.Test)
+                    .Where(q => q.Test.Id == testId)
+                    .ToListAsync();
+                foreach (var testResult in resultsToDelete)
+                {
+                    context.TestResults.Remove(testResult);
+                }
+                Test testToDelete = await context.Tests
+                    .Where(t => t.Id == testId)
+                    .FirstOrDefaultAsync();
+
+                context.Tests.Remove(testToDelete);
+                await context.SaveChangesAsync();
+            }
+            return true;
+        }
     }
 }

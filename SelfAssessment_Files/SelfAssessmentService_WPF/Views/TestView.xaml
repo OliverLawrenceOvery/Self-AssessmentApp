@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="30" HorizontalAlignment="Center">
@@ -67,10 +69,19 @@
                         </Grid>
                         <Border Grid.Row="2" BorderBrush="Black" BorderThickness="1">
                             <Grid>
-                            <TextBox Name="quizDescription" Text="{Binding SelectedTest.TestName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Background="Black" Visibility="Visible" Grid.Row="2" Name="startQuizButton" 
-                                Content="Start" Command="{Binding StartTestCommand}" HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom" Width="80" Height="25"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="46"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="quizDescription" Text="{Binding SelectedTest.TestName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="1" Background="White" Foreground="Black" Visibility="Visible" Grid.Row="2" Name="startQuizButton" 
+                                         Content="Start" Command="{Binding StartTestCommand}"  BorderBrush="White"
+                                         VerticalAlignment="Bottom" Height="25"/>
+                                <Button Grid.Column="2" Background="White" BorderBrush="White" Height="25"
+                                         Command="{Binding DeleteTest}">
+                                        <materialDesign:PackIcon Foreground="Black" Kind="Bin" Width="15" Height="15"/>
+                                 </Button>
                             </Grid>
                         </Border>
                     </Grid>

@@ -56,7 +56,7 @@ namespace SelfAssessmentService_WPF.Navigation {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/SelfAssessmentService_WPF;component/navigation/navigationbar.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/SelfAssessmentService_WPF;V1.0.0.0;component/navigation/navigationbar.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Navigation\NavigationBar.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

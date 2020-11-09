@@ -151,8 +151,15 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
+        public ICommand DeleteTest => new DelegateCommand<object>(FuncToCall6);
+        private async void FuncToCall6(object context)
+        {
+            ITestService service = new TestDataService();
+            await service.Delete(SelectedTest.Id);
+            TestList = Context.Tests.Where(q => q.TestName.Contains(SearchText)).ToList();
+        }
 
-
+        
         private string _questionName;
         public string QuestionName
         {
@@ -257,34 +264,31 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand CreateNewQuestionCommand => new DelegateCommand<object>(FuncToCall3);
         private async void FuncToCall3(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            Question newQuestion = new Question()
             {
-                Question newQuestion = new Question()
-                {
-                    QuestionText = QuestionTextForNewTest,
-                    CorrectAnswer = CorrectAnswerForNewTest,
-                    QuestionMark = 10,
-                };
+                QuestionText = QuestionTextForNewTest,
+                CorrectAnswer = CorrectAnswerForNewTest,
+                QuestionMark = 10,
+            };
 
-                IQuestionService questionService = new QuestionDataService();
-                ITestService testService = new TestDataService();
-               // Test selectedTest = await testService.Get(SelectedTestForNewQuestion);
-                IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(SelectedTestForNewQuestion);
+            IQuestionService questionService = new QuestionDataService();
+            ITestService testService = new TestDataService();
+            IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(SelectedTestForNewQuestion);
 
-                if (selectedTestQuestions.Count() > 0)
-                {
-                    if (selectedTestQuestions.ToList()[0].Test.TotalMark == selectedTestQuestions.Select(q => q.QuestionMark).Sum())
-                    { MessageBox.Show("This test cannot support any more questions (maximum score reached)."); }
-                    else
-                    {
-                        await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
-                    }
-                }
+            if (selectedTestQuestions.Count() > 0)
+            {
+                if (selectedTestQuestions.ToList()[0].Test.TotalMark == selectedTestQuestions.Select(q => q.QuestionMark).Sum())
+                { MessageBox.Show("This test cannot support any more questions (maximum score reached)."); }
                 else
                 {
                     await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
                 }
             }
+            else
+            {
+                await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+            }
         }
+
     }
 }

@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
-  <Class Name="SelfAssessmentService_Domain.Models.User" Collapsed="true">
-    <Position X="3.25" Y="1.75" Width="1.5" />
+  <Class Name="SelfAssessmentService_Domain.Models.User">
+    <Position X="14.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAQA=</HashCode>
       <FileName>Models\User.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.TestSeries">
-    <Position X="14.5" Y="1.75" Width="1.5" />
+    <Position X="11.75" Y="1.25" Width="1.5" />
+    <AssociationLine Name="TestList" Type="SelfAssessmentService_Domain.Models.Test" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.25" Y="1.866" />
+        <Point X="15.562" Y="1.866" />
+        <Point X="15.562" Y="2.75" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
       <FileName>Models\TestSeries.cs</FileName>
@@ -18,7 +25,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.TestResult">
-    <Position X="9.5" Y="3.25" Width="1.5" />
+    <Position X="11.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAEA=</HashCode>
       <FileName>Models\TestResult.cs</FileName>
@@ -29,7 +36,14 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.Test">
-    <Position X="12" Y="2.25" Width="1.5" />
+    <Position X="14.25" Y="2.75" Width="1.5" />
+    <AssociationLine Name="TestSeries" Type="SelfAssessmentService_Domain.Models.TestSeries" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.562" Y="2.75" />
+        <Point X="14.562" Y="2.206" />
+        <Point X="13.25" Y="2.206" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAIAAAAACAAAAAAAAAAAAAAAAEAAAAAEAAAAA=</HashCode>
       <FileName>Models\Test.cs</FileName>
@@ -39,7 +53,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.SubTopic">
-    <Position X="7.75" Y="1.75" Width="1.5" />
+    <Position X="9.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACCAAAAAAgAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>Models\SubTopic.cs</FileName>
@@ -49,7 +63,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.QuestionOption">
-    <Position X="19.25" Y="1.75" Width="1.5" />
+    <Position X="19.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Models\QuestionOption.cs</FileName>
@@ -59,7 +73,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.Question">
-    <Position X="16.5" Y="1.75" Width="1.5" />
+    <Position X="17" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAACgAAAAAAAAAAAAABAAgAACAAAAAA=</HashCode>
       <FileName>Models\Question.cs</FileName>
@@ -72,7 +86,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.MainTopic">
-    <Position X="5.25" Y="1.75" Width="1.5" />
+    <Position X="6" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\MainTopic.cs</FileName>
@@ -82,7 +96,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="SelfAssessmentService_Domain.Models.Account">
-    <Position X="1" Y="1.75" Width="1.5" />
+    <Position X="11.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Account.cs</FileName>
@@ -90,13 +104,6 @@
     <ShowAsAssociation>
       <Property Name="User" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="SelfAssessmentService_Domain.Models.IdentityObject" Collapsed="true">
-    <Position X="9.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Models\IdentityObject.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
