@@ -61,17 +61,17 @@
 
         </Grid>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" HorizontalAlignment="Right">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="250"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Margin="10 20 0 0">
-                <ComboBox HorizontalAlignment="Center" Width="150" Height="25" VerticalAlignment="Top" ItemsSource="{Binding AllTests}"
+                <ComboBox HorizontalAlignment="Center" Width="100" Height="25" VerticalAlignment="Top" ItemsSource="{Binding AllTests}"
                           SelectedItem="{Binding SelectedSeries}"/>
             </Grid>
-            
-            <oxy1:Plot Grid.Row="1" Margin="0 20 0 0">
+
+            <oxy1:Plot Grid.Row="1" Margin="0 20 0 0" Width="300">
                 <oxy1:Plot.Series>
                     <oxy1:LineSeries ItemsSource="{Binding Points, UpdateSourceTrigger=PropertyChanged}"/>
                 </oxy1:Plot.Series>

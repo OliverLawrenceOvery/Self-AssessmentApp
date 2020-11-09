@@ -26,6 +26,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
             _ = GetAllTestSeries();
+            AllTests = Context.Tests.Select(q => q.TestName).ToList();
             ListVisibility = Visibility.Visible;
             DescriptionVisibility = Visibility.Visible;
             MainVisibility = Visibility.Collapsed;
@@ -44,6 +45,16 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _allTestSeries; }
             set { _allTestSeries = value; OnPropertyChanged(nameof(AllTestSeries)); }
         }
+
+
+        private IEnumerable<string> _allTests;
+        public IEnumerable<string> AllTests
+        {
+            get { return _allTests; }
+            set { _allTests = value; OnPropertyChanged(nameof(AllTests)); }
+        }
+
+
 
 
 
@@ -175,10 +186,11 @@ namespace SelfAssessmentService_WPF.ViewModels
             };
             ITestService service = new TestDataService();
             Test createdTest = await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
-            if(createdTest == null)
+            if (createdTest == null)
             {
                 MessageBox.Show("A test already exists with this name.");
             }
+            else { AllTests = Context.Tests.Select(q => q.TestName).ToList(); }
         }
 
         public string NewSeriesName { get; set; }
@@ -191,6 +203,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             {
                 IDataService<TestSeries> service = new GenericDataService<TestSeries>();
                 await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
+                _ = GetAllTestSeries();
             }
             else { MessageBox.Show("A test series by this name already exists"); }
         }
@@ -228,8 +241,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 await service.CreatePersonalTestResult(CurrentAccount.Id, SelectedTest.TestName, newTestResult);
             }
         }
-
-        public IList<string> AllTests => Context.Tests.Select(q => q.TestName).ToList();
 
 
         public string QuestionTextForNewTest { get; set; }

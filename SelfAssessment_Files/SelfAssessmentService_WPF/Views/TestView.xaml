@@ -300,7 +300,7 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <ComboBox Text="Hello" ItemsSource="{Binding AllTests}" Grid.Row="7" 
+                <ComboBox Text="Hello" ItemsSource="{Binding AllTests, UpdateSourceTrigger=PropertyChanged}" Grid.Row="7" 
                           SelectedItem="{Binding SelectedTestForNewQuestion}"/>
                 <Button Grid.Row="8" Content="Submit" Command="{Binding CreateNewQuestionCommand}"/>
             </Grid>
