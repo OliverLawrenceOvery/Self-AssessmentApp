@@ -7,10 +7,15 @@ The goal of this project is to create a service that allows the user to customis
 
 ## Sprint 1
 
+![Screenshot](/README_Images/sprint1start.png)
+
 ### Sprint Review
+
 The first sprint focused on the definition and initialisation of the database, achieved using the code-first approach because my project was primarily domain-layer driven. Additionally, such an approach allows for the option of easily adjusting table properties and relationships via a simple code migration whenever required.
 
 Creation of the database required careful consideration of two primary functionalities offered by the service: the ability to store resources in the form of notes concisely and in an easy to retrieve fashion, and the flexibility and freedom to create whatever tests and test questions the user desired. For the former, it was decided to structure resource notes into main topics, each of which contain many sub-topics. For the latter, the following hierarchal structure was decided upon: test series' which would each be comprised of many tests, which would each in turn be comprised of test questions. Such a segregation would give the user great flexibility in being able to customise ranges of tests to cover any conceivable topic. Finally, it is envisaged that Sprint 2 will add login/register functionality to the service, and as such it was decided to create a User class which would be associated with an Account, in order to track and personalise the user's interaction with the user.
+
+![Screenshot](/README_Images/classdiagram.png)
 
 Once migrated to the database, it was necessary to develop CRUD services to facilitate table querying throughout the application. This was achieved in a way that conforms to both the Open/Closed principle and the principle of Dependency Inversion. The foundation for CRUD functionality in this application is a data service interface that defines all of the basic CRUD operations, implemented by a generic data service class that takes a generic-type parameter - in other words, it can be used to query any table when needed. The main benefit of this is that the generic data service class is open for extension by any other class that requires a more specific CRUD query. It was additionally decided to make the CRUD methods asynchronous in order to optimise the GUI performance later on down the line. These CRUD methods where appropriately unit tested, with the passing confirming that they had been implemented as intended.
 
@@ -20,9 +25,11 @@ Attention was now turned towards developing a basic WPF GUI layer, consisting of
 ### Sprint Retrospective
 In summary, this sprint was highly successful: the database was conceived and created according to the specification detailed in the user stories, and an easily extendable, flexible CRUD service was created to manage interactions between visual studio and the database. Structuring the WPF layer to conform to the MVVM design pattern was additionally achieved without any difficulty, however the navigation bar required more careful consideration. For example, ensuring that the home button was highlighted upon application start-up required the creation of an IsChecked binding on each button to achieve this. All user stories were deemed to be satisfied, and preparations have been made for Sprint 2, such as the development of a framework for authentication unit testing.
 
-
+![Screenshot](/README_Images/sprint1end.png)
 
 ## Sprint 2
+
+![Screenshot](/README_Images/sprint2start.png)
 
 ### Sprint Review
 Sprint 2 focused on the development of the authentication and registration services, before moving onto the GUI and ensuring that each view linked to the appropriate CRUD manager services. 
@@ -40,7 +47,11 @@ Finally, the test view needed to be fully customisable with regards to the abili
 ### Sprint Retrospective
 In summary, this sprint was noticably more intensive than the first, with the implementation of the required GUI functionality presenting numerous issues over the course of the development. It was perhaps naive to come into this sprint expecting it to go completely smoothly, and fortunately all the issues that presented themselves were fixed in a manner that did not overly convolute the code, with solutions that did not cause a cascade of subsequent issues/errors. SOLID principles were maintained throughou; for example Dependency Inversion was adhered to by a complete reliance on interfaces over classes - evidenced for example in the view model constructors, where interfaces for the authenticator and navigator were passed in as opposed to class instances. The Interface Segregation Principle was adhered through the addition of some new test services with custom CRUD methods, for example to create a new test result for a specific test and user, and to retrieve all of the test results for a specific user and specific test series. The backbone of these CRUD services were interfaces for each set of customised CRUD methods, and as such multiple interfaces were used rather than a reliance on a single large interface.
 
+![Screenshot](/README_Images/sprint2end.png)
+
 ## Sprint 3
+
+![Screenshot](/README_Images/sprint3start.png)
 
 ### Sprint Review
 
