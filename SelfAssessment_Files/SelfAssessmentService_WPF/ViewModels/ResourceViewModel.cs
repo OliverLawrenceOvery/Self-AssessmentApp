@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SelfAssessmentService_WPF.ViewModels
@@ -76,10 +77,16 @@ namespace SelfAssessmentService_WPF.ViewModels
                     TopicIntroduction = _selectedSubTopic.Introduction;
                     TopicContent = _selectedSubTopic.Content;
                     TopicSummary = _selectedSubTopic.Summary;
-                    OnPropertyChanged(nameof(TopicIntroduction));
-                    OnPropertyChanged(nameof(TopicContent));
-                    OnPropertyChanged(nameof(TopicSummary));
                 }
+                else
+                {
+                    TopicIntroduction = "";
+                    TopicContent = "";
+                    TopicSummary = "";
+                }
+                OnPropertyChanged(nameof(TopicIntroduction));
+                OnPropertyChanged(nameof(TopicContent));
+                OnPropertyChanged(nameof(TopicSummary));
             }
         }
 
@@ -125,8 +132,16 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
-                db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
-                db.SaveChanges();
+                MainTopic checkMainTopic = db.MainTopics.Where(m => m.Title == CreatedMainTopicTitle).FirstOrDefault();
+                if (checkMainTopic == null)
+                {
+                    db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
+                    db.SaveChanges();
+                }
+                else 
+                {
+                    MessageBox.Show("This main topic already exists!");
+                }
             }
             MainTopics = Context.MainTopics.ToList();
             CreatedMainTopicTitle = "";
@@ -153,6 +168,14 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
+                List<SubTopic> subTopics = db.SubTopics
+                    .Include(s => s.MainTopic)
+                    .Where(m => m.MainTopic.Title == SelectedMainTopic.Title)
+                    .ToList();
+                foreach(SubTopic subTopic in subTopics)
+                {
+                    db.SubTopics.Remove(subTopic);
+                }
                 MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
                 db.Set<MainTopic>().Remove(mainTopic);
                 db.SaveChanges();
@@ -160,6 +183,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             SelectedMainTopic = null;
             MainTopics = Context.MainTopics.ToList();
             CreatedMainTopicTitle = "";
+            SubTopics = null;
 
         }
 
@@ -178,11 +202,9 @@ namespace SelfAssessmentService_WPF.ViewModels
             else if (CreateOrUpdate == "Update")
             {
                 ISubTopicService service = new SubTopicDataService();
-                await service.UpdateSubTopic(SelectedSubTopic.Id, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
-                OnPropertyChanged(nameof(CreatedSubTopicTitle));
-                OnPropertyChanged(nameof(CreatedSubTopicIntro));
-                OnPropertyChanged(nameof(CreatedSubTopicContent));
-                OnPropertyChanged(nameof(CreatedSubTopicSummary));
+                SubTopic updatedSubTopic = await service.UpdateSubTopic(SelectedSubTopic.Id, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
+                SelectedSubTopic = updatedSubTopic;
+                CreateOrUpdate = "Create";
             }
         }
 
