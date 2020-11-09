@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SelfAssessmentService_Domain.Models;
 using SelfAssessmentService_Domain.Services.CRUD_Services;
 using System;
@@ -28,5 +29,12 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
             }
         }
 
+        public async Task<IEnumerable<Question>> GetAllQuestionsForGivenTestName(string testName)
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                return await context.Questions.Include(q => q.Test).Where(t => t.Test.TestName == testName).ToListAsync();
+            }
+        }
     }
 }

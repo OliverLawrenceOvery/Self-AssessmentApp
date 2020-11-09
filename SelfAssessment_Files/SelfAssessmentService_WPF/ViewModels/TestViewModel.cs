@@ -125,23 +125,30 @@ namespace SelfAssessmentService_WPF.ViewModels
 
         public int CurrentQuestion = 0;
         public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall);
-        private void FuncToCall(object context)
+        private async void FuncToCall(object context)
         {
-            ListVisibility = Visibility.Collapsed;
-            DescriptionVisibility = Visibility.Collapsed;
-            MainVisibility = Visibility.Visible;
-            CreateQuestionVisibility = Visibility.Collapsed;
             _ = UpdateQuestion();
         }
 
         public async Task UpdateQuestion()
         {
-            ITestService service = new TestDataService();
-            Test selectedTest = await service.Get(SelectedTest.Id);
-            SelectedTest = selectedTest;
-            QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-            QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-            QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+            IQuestionService questionService = new QuestionDataService();
+            ITestService testService = new TestDataService();
+            Test selectedTest = await testService.Get(SelectedTest.Id);
+            IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(selectedTest.TestName);
+
+            if (selectedTest.TotalMark != selectedTestQuestions.Select(q => q.QuestionMark).Sum()) { MessageBox.Show("This test needs more questions in order to be eligible to be taken."); }
+            else
+            {
+                SelectedTest = selectedTest;
+                QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+                ListVisibility = Visibility.Collapsed;
+                DescriptionVisibility = Visibility.Collapsed;
+                MainVisibility = Visibility.Visible;
+                CreateQuestionVisibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -184,10 +191,12 @@ namespace SelfAssessmentService_WPF.ViewModels
                 TestName = NewTestName,
                 TotalMark = NewTestMark,
             };
-            ITestService service = new TestDataService();
-            Test createdTest = await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
+
+            ITestService testService = new TestDataService();
+            Test createdTest = await testService.CreateNewTest(newTest, SelectedSeriesForNewTest);
             if (createdTest == null) { MessageBox.Show("A test already exists with this name."); }
             else { AllTests = Context.Tests.Select(q => q.TestName).ToList(); }
+
         }
 
         public string NewSeriesName { get; set; }
@@ -230,7 +239,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 MainVisibility = Visibility.Collapsed;
                 CreateQuestionVisibility = Visibility.Visible;
                 CurrentQuestion = 0;
-                TestResult newTestResult = new TestResult() { Mark = TotalTestMark*100/SelectedTest.TotalMark };
+                TestResult newTestResult = new TestResult() { Mark = TotalTestMark * 100 / SelectedTest.TotalMark };
                 ITestResultService service = new TestResultService();
                 await service.CreatePersonalTestResult(CurrentAccount.Id, SelectedTest.TestName, newTestResult);
             }
@@ -256,11 +265,26 @@ namespace SelfAssessmentService_WPF.ViewModels
                     CorrectAnswer = CorrectAnswerForNewTest,
                     QuestionMark = 10,
                 };
-                IQuestionService service = new QuestionDataService();
-                await service.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+
+                IQuestionService questionService = new QuestionDataService();
+                ITestService testService = new TestDataService();
+               // Test selectedTest = await testService.Get(SelectedTestForNewQuestion);
+                IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(SelectedTestForNewQuestion);
+
+                if (selectedTestQuestions.Count() > 0)
+                {
+                    if (selectedTestQuestions.ToList()[0].Test.TotalMark == selectedTestQuestions.Select(q => q.QuestionMark).Sum())
+                    { MessageBox.Show("This test cannot support any more questions (maximum score reached)."); }
+                    else
+                    {
+                        await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+                    }
+                }
+                else
+                {
+                    await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+                }
             }
         }
-
-
     }
 }

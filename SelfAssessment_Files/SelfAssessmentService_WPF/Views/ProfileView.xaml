@@ -12,8 +12,8 @@
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Margin="10 8 0 0">
@@ -50,9 +50,9 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Test Results" 
-                                    Width="154" DisplayMemberBinding="{Binding Test.TestName}"/>
+                                    Width="240" DisplayMemberBinding="{Binding Test.TestName}"/>
                                 <GridViewColumn Header="Percentage" 
-                                    Width="150" DisplayMemberBinding="{Binding Mark}"/>
+                                    Width="130" DisplayMemberBinding="{Binding Mark}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
