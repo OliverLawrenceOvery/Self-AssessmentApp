@@ -16,9 +16,9 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
-                //TestResult testResultCheck = context.TestResults.Where(t => t.Test.TestName == testName).FirstOrDefault(); //return already existing test result for that test
-                //if (testResultCheck == null)
-                //{
+                TestResult testResultCheck = context.TestResults.Where(t => t.Test.TestName == testName).FirstOrDefault(); //return already existing test result for that test
+                if (testResultCheck == null)
+                {
                     Account account = context.Accounts.Where(a => a.Id == id).FirstOrDefault();
                     Test test = context.Tests.Where(e => e.TestName == testName).FirstOrDefault();
                     testResult.Account = account;
@@ -26,17 +26,17 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
                     EntityEntry<TestResult> createdResult = await context.Set<TestResult>().AddAsync(testResult);
                     await context.SaveChangesAsync();
                     return createdResult.Entity;
-                //}
-                //else
-                //{
-                //    if(testResultCheck.Mark < testResult.Mark)  //if user scores a higher mark
-                //    {
-                //        testResultCheck.Mark = testResult.Mark;
-                //        context.Set<TestResult>().Update(testResultCheck);
-                //        await context.SaveChangesAsync();
-                //    }
-                //    return testResultCheck;
-                //}
+                }
+                else
+                {
+                    if(testResultCheck.Mark < testResult.Mark)  //if user scores a higher mark
+                    {
+                        testResultCheck.Mark = testResult.Mark;
+                        context.Set<TestResult>().Update(testResultCheck);
+                        await context.SaveChangesAsync();
+                    }
+                    return testResultCheck;
+                }
             }
         }
 
