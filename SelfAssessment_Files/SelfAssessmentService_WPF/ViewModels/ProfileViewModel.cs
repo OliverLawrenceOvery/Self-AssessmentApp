@@ -55,12 +55,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             {
                 _selectedSeries = value;
                 _ = GetPersonalTestResults();
-                Points = new List<DataPoint>();
-                for (int i = 0; i < PersonalTestResults.Count; i++)
-                {
-                    Points.Add(new DataPoint(i, PersonalTestResults[i].Mark));
-                }
-                MaximumY = PersonalTestResults.Count - 1;
             }
         }
 
@@ -75,6 +69,12 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             ITestResultService service = new TestResultService();
             PersonalTestResults = await service.GetPersonalTestResults(CurrentAccount, SelectedSeries);
+            Points = new List<DataPoint>();
+            for (int i = 0; i < PersonalTestResults.Count; i++)
+            {
+                Points.Add(new DataPoint(i, PersonalTestResults[i].Mark));
+            }
+            MaximumY = PersonalTestResults.Count - 1;
         }
 
         private int _maximumY;

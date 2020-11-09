@@ -16,13 +16,27 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
-                Account account = context.Accounts.Where(a => a.Id == id).FirstOrDefault();
-                Test test = context.Tests.Where(e => e.TestName == testName).FirstOrDefault();
-                testResult.Account = account;
-                testResult.Test = test;
-                EntityEntry<TestResult> createdResult = await context.Set<TestResult>().AddAsync(testResult);
-                await context.SaveChangesAsync();
-                return createdResult.Entity;
+                TestResult testResultCheck = context.TestResults.Where(t => t.Test.TestName == testName).FirstOrDefault(); //return already existing test result for that test
+                if (testResultCheck == null)
+                {
+                    Account account = context.Accounts.Where(a => a.Id == id).FirstOrDefault();
+                    Test test = context.Tests.Where(e => e.TestName == testName).FirstOrDefault();
+                    testResult.Account = account;
+                    testResult.Test = test;
+                    EntityEntry<TestResult> createdResult = await context.Set<TestResult>().AddAsync(testResult);
+                    await context.SaveChangesAsync();
+                    return createdResult.Entity;
+                }
+                else
+                {
+                    if(testResultCheck.Mark < testResult.Mark)  //if user scores a higher mark
+                    {
+                        testResultCheck.Mark = testResult.Mark;
+                        EntityEntry<TestResult> createdResult = await context.Set<TestResult>().AddAsync(testResultCheck);
+                        await context.SaveChangesAsync();
+                        return createdResult.Entity;
+                    }
+                }
             }
         }
 

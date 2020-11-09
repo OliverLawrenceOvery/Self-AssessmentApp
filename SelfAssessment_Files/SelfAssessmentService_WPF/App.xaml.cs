@@ -27,7 +27,7 @@ namespace SelfAssessmentService_WPF
             IPasswordHasher passwordHasher = new PasswordHasher();
             IAccountService accountService = new AccountDataService();
             IAuthenticationService service = new AuthenticationService(accountService, passwordHasher);
-            service.Register("test1", "test1", "test1");
+            //service.Register("test1", "test1", "test1");
 
             IAuthenticator authenticator = new Authenticator(service);
             INavigator navigator = new Navigator(authenticator);

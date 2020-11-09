@@ -40,9 +40,43 @@ namespace SelfAssessmentService_Tests
                 User = user,
             };
 
+            TestSeries testSeries = new TestSeries()
+            {
+                TestSeriesName = "TestTestSeries",
+            };
+
+            Test test = new Test()
+            {
+                TestSeries = testSeries,
+                TestName = "TestName"
+            };
+
+            TestResult testResult = new TestResult()
+            {
+                Account = account,
+                Mark = 40,
+                Test = test
+            };
+
+            MainTopic mainTopic = new MainTopic()
+            {
+                Title = "MainTopic"
+            };
+
+            SubTopic subTopic = new SubTopic()
+            {
+                MainTopic = mainTopic,
+                Title = "SubTopic"
+            };
+
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
                 context.Accounts.Add(account);
+                context.TestSeries.Add(testSeries);
+                context.MainTopics.Add(mainTopic);
+                context.SubTopics.Add(subTopic);
+                context.Tests.Add(test);
+                context.TestResults.Add(testResult);
                 context.SaveChanges();
             }
         }
@@ -53,6 +87,48 @@ namespace SelfAssessmentService_Tests
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
+                List<TestResult> testTestResults = context.TestResults.ToList();
+                foreach (var testResult in testTestResults)
+                {
+                    context.TestResults.Remove(testResult);
+                }
+
+                List<QuestionOption> testQuestionOptions = context.QuestionOptions.ToList();
+                foreach (var questionOption in testQuestionOptions)
+                {
+                    context.QuestionOptions.Remove(questionOption);
+                }
+
+                List<Question> testQuestions = context.Questions.ToList();
+                foreach (var question in testQuestions)
+                {
+                    context.Questions.Remove(question);
+                }
+
+                List<Test> testTests = context.Tests.ToList();
+                foreach (var test in testTests)
+                {
+                    context.Tests.Remove(test);
+                }
+
+                List<TestSeries> testTestSeries = context.TestSeries.ToList();
+                foreach (var testSeries in testTestSeries)
+                {
+                    context.TestSeries.Remove(testSeries);
+                }
+
+                List<SubTopic> testSubTopics = context.SubTopics.ToList();
+                foreach (var subTopic in testSubTopics)
+                {
+                    context.SubTopics.Remove(subTopic);
+                }
+
+                List<MainTopic> testMainTopics = context.MainTopics.ToList();
+                foreach (var mainTopic in testMainTopics)
+                {
+                    context.MainTopics.Remove(mainTopic);
+                }
+
                 List<Account> testAccounts = context.Accounts.Where(a => a.User.Username != "test1").ToList();
                 foreach (var account in testAccounts)
                 {
@@ -63,24 +139,6 @@ namespace SelfAssessmentService_Tests
                 foreach (var user in testUsers)
                 {
                     context.Users.Remove(user);
-                }
-
-                List<QuestionOption> testQuestionOptions = context.QuestionOptions.ToList();
-                foreach (var questionOption in testQuestionOptions)
-                {
-                    context.QuestionOptions.Remove(questionOption);
-                }
-
-                List<Question> testQuestions = context.Questions.Where(a => a.QuestionText == "TestQuestion1").ToList();
-                foreach (var question in testQuestions)
-                {
-                    context.Questions.Remove(question);
-                }
-
-                List<Test> testTests = context.Tests.Where(a => a.TestName == "Test1").ToList();
-                foreach (var test in testTests)
-                {
-                    context.Tests.Remove(test);
                 }
                 context.SaveChanges();
             }
@@ -160,11 +218,15 @@ namespace SelfAssessmentService_Tests
                 PasswordHashed = "test1",
                 Email = "changedemail@gmail.com"
             };
+            await userService.Update(1193, updatedUser);
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                User retrievedUpdatedUser = context.Users.Where(u => u.Username == "test1").FirstOrDefault();
 
-            User retrievedUpdatedUser = await userService.Update(1193, updatedUser);
+                Assert.AreEqual("test1", retrievedUpdatedUser.Username);
+                Assert.AreEqual("changedemail@gmail.com", retrievedUpdatedUser.Email);
+            }
 
-            Assert.AreEqual("test1", retrievedUpdatedUser.Username);
-            Assert.AreEqual("changedemail@gmail.com", retrievedUpdatedUser.Email);
 
             User updatedUserBack = new User()
             {
@@ -172,9 +234,14 @@ namespace SelfAssessmentService_Tests
                 PasswordHashed = "test1",
                 Email = "olawrenceovery@gmail.com"
             };
+            await userService.Update(1193, updatedUserBack);
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                User retrievedUpdatedUserBack = context.Users.Where(u => u.Username == "test1").FirstOrDefault();
 
-            User retrievedUpdatedUserBack = await userService.Update(1193, updatedUserBack);
-            Assert.AreEqual("olawrenceovery@gmail.com", retrievedUpdatedUserBack.Email);
+                Assert.AreEqual("test1", retrievedUpdatedUserBack.Username);
+                Assert.AreEqual("olawrenceovery@gmail.com", retrievedUpdatedUserBack.Email);
+            }
         }
         #endregion
 
@@ -199,17 +266,12 @@ namespace SelfAssessmentService_Tests
             {
                 await context.Set<Account>().AddAsync(account);
                 await context.SaveChangesAsync();
+
+                await accountService.Delete(account.Id);
+                Account retrievedAccount = context.Accounts.Where(a => a.User.Username == "test3").FirstOrDefault();
+                Assert.IsNull(retrievedAccount);
             }
 
-            await accountService.Delete(account.Id);
-            Account retrievedAccount;
-
-            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
-            {
-                retrievedAccount = context.Accounts.Where(a => a.User.Username == "test3").FirstOrDefault();
-            }
-
-            Assert.IsNull(retrievedAccount);
         }
         #endregion
 
@@ -240,9 +302,28 @@ namespace SelfAssessmentService_Tests
             Assert.AreEqual("TestQuestion1", retrievedQuestion.QuestionText);
             Assert.AreEqual("TestOption1", retrievedQuestionOption.OptionText);
         }
+
+        [Test]
+        public async Task CreateNewTest_GivenTheTestSeriesName()
+        {
+            Test test = new Test()
+            {
+                TestName = "NewTest",
+                TotalMark = 40
+            };
+
+            await testService.CreateNewTest(test, "TestTestSeries");
+
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Test createdTest = context.Tests.Where(t => t.TestName == "NewTest")
+                    .Include(t => t.TestSeries)
+                    .FirstOrDefault();
+                Assert.AreEqual("TestTestSeries", createdTest.TestSeries.TestSeriesName);
+                Assert.AreEqual("NewTest", createdTest.TestName);
+            }
+        }
         #endregion
-
-
 
 
         #region QuestionDataService Tests
@@ -256,15 +337,87 @@ namespace SelfAssessmentService_Tests
                 QuestionMark = 10,
             };
 
-            Question createdQuestion = await questionService.CreateNewQuestion(newQuestion, "Test1", "Option1",
-                "Option2", "Option3", "Option4");
+            await questionService.CreateNewQuestion(newQuestion, "Test1", "Option1", "Option2", "Option3", "Option4");
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Question createdQuestion = context.Questions
+                    .Include(q => q.QuestionOptions)
+                    .Where(q => q.QuestionText == "TestQuestion1")
+                    .FirstOrDefault();
 
-            Assert.AreEqual("TestQuestion1", createdQuestion.QuestionText);
-            Assert.AreEqual("Option1", createdQuestion.QuestionOptions.ToList()[0].OptionText);
-            Assert.AreEqual("Option2", createdQuestion.QuestionOptions.ToList()[1].OptionText);
-            Assert.AreEqual("Option3", createdQuestion.QuestionOptions.ToList()[2].OptionText);
-            Assert.AreEqual("Option4", createdQuestion.QuestionOptions.ToList()[3].OptionText);
-            Assert.AreEqual("Option2", createdQuestion.CorrectAnswer);
+                Assert.AreEqual("TestQuestion1", createdQuestion.QuestionText);
+                Assert.AreEqual("Option1", createdQuestion.QuestionOptions.ToList()[0].OptionText);
+                Assert.AreEqual("Option2", createdQuestion.QuestionOptions.ToList()[1].OptionText);
+                Assert.AreEqual("Option3", createdQuestion.QuestionOptions.ToList()[2].OptionText);
+                Assert.AreEqual("Option4", createdQuestion.QuestionOptions.ToList()[3].OptionText);
+                Assert.AreEqual("Option2", createdQuestion.CorrectAnswer);
+            }
+        }
+        #endregion
+
+
+        #region SubTopicDataService Tests
+        [Test]
+        public async Task CreateANewSubTopicGivenAllNecessaryParameters()
+        {
+            await subTopicService.CreateNewSubTopic("MainTopic", "Title", "Intro", "Content", "Summary");
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                SubTopic subTopic = context.SubTopics.Where(s => s.Title == "Title").FirstOrDefault();
+                Assert.AreEqual("Title", subTopic.Title);
+                Assert.AreEqual("Intro", subTopic.Introduction);
+            }
+        }        
+
+        [Test]
+        public async Task UpdateSubTopicContents()
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                SubTopic subTopic = context.SubTopics.Where(s => s.Title == "SubTopic").FirstOrDefault();
+                SubTopic createdSubTopic = await subTopicService.UpdateSubTopic(subTopic.Id, "NewTitle", "NewIntro", "NewContent", "NewSummary");
+            }
+
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                SubTopic retrievedsubTopic = context.SubTopics.Where(s => s.Title == "NewTitle").FirstOrDefault();
+                Assert.AreEqual("NewTitle", retrievedsubTopic.Title);
+                Assert.AreEqual("NewIntro", retrievedsubTopic.Introduction);
+            }
+        }
+        #endregion
+
+
+        #region TestResultService Tests
+        [Test]
+        public async Task CreatePersonalTestResult()
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
+                Test test = context.Tests.Where(t => t.TestName == "TestName").FirstOrDefault();
+                TestResult testResult = new TestResult() { Mark = 10 };
+                await testResultService.CreatePersonalTestResult(account.Id, test.TestName, testResult);
+
+                TestResult retrievedTestResult = context.TestResults
+                    .Include(t => t.Account)
+                    .ThenInclude(t => t.User)
+                    .Where(t => t.Mark == 10)
+                    .Where(t => t.Test.TestName == "TestName").FirstOrDefault();
+                Assert.AreEqual(10, retrievedTestResult.Mark);
+                Assert.AreEqual("test2", retrievedTestResult.Account.User.Username);
+            }
+        }
+
+        [Test]
+        public async Task GetAllPersonalTestResults()
+        {
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
+                List<TestResult> testResults = await testResultService.GetPersonalTestResults(account, "TestTestSeries");
+                Assert.AreEqual(40, testResults[0].Mark);
+            }
         }
         #endregion
     }

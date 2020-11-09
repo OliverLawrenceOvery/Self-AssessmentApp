@@ -77,7 +77,7 @@
                 </oxy1:Plot.Series>
                 <oxy1:Plot.Axes>
                     <oxy1:LinearAxis Position="Bottom" Minimum="0" Maximum="{Binding MaximumY, UpdateSourceTrigger=PropertyChanged}" />
-                    <oxy1:LinearAxis Position="Left" Minimum="0" Maximum="40" />
+                    <oxy1:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy1:Plot.Axes>
                 <!--<oxy1:Plot.Annotations>
                     <oxy1:PointAnnotation X="5" Y="6" Text="Hello"  Visibility="Visible" StrokeThickness="3" 
