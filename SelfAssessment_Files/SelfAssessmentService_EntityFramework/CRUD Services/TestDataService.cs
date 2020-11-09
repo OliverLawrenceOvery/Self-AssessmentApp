@@ -28,12 +28,17 @@ namespace SelfAssessmentService_EntityFramework.CRUD_Services
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
-                test.TestSeries = context.TestSeries
-                    .Where(q => q.TestSeriesName == seriesName)
-                    .FirstOrDefault();
-                EntityEntry<Test> createdResult = await context.Set<Test>().AddAsync(test);
-                await context.SaveChangesAsync();
-                return createdResult.Entity;
+                Test checkTest = context.Tests.Where(t => t.TestName == test.TestName).FirstOrDefault();
+                if (checkTest == null)
+                {
+                    test.TestSeries = context.TestSeries
+                        .Where(q => q.TestSeriesName == seriesName)
+                        .FirstOrDefault();
+                    EntityEntry<Test> createdResult = await context.Set<Test>().AddAsync(test);
+                    await context.SaveChangesAsync();
+                    return createdResult.Entity;
+                }
+                return null;
             }
         }
 

@@ -163,6 +163,8 @@ namespace SelfAssessmentService_WPF.ViewModels
         public int NewTestMark { get; set; }
         public string SelectedSeriesForNewTest { get; set; }
 
+
+
         public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4);
         private async void FuncToCall4(object context)
         {
@@ -172,11 +174,12 @@ namespace SelfAssessmentService_WPF.ViewModels
                 TotalMark = NewTestMark,
             };
             ITestService service = new TestDataService();
-            await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
+            Test createdTest = await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
+            if(createdTest == null)
+            {
+                MessageBox.Show("A test already exists with this name.");
+            }
         }
-
-
-
 
         public string NewSeriesName { get; set; }
 
@@ -248,6 +251,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                     , SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
             }
         }
+
 
     }
 }
