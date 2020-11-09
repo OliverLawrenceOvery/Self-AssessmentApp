@@ -15,7 +15,20 @@ namespace SelfAssessmentService_WPF.ViewModels
     public class ResourceViewModel : BaseViewModel
     {
         public SelfAssessmentDbContext Context => new SelfAssessmentDbContext();
-        public IList<MainTopic> MainTopics => Context.MainTopics.ToList();
+
+        private IList<MainTopic> _mainTopics;
+        public IList<MainTopic> MainTopics
+        {
+            get { return _mainTopics; }
+            set { _mainTopics = value; OnPropertyChanged(nameof(MainTopics)); }
+        }
+
+        private string _createOrUpdateMain;
+        public string CreateOrUpdateMain
+        {
+            get { return _createOrUpdateMain; }
+            set { _createOrUpdateMain = value; OnPropertyChanged(nameof(CreateOrUpdateMain)); }
+        }
 
         private string _createOrUpdate;
         public string CreateOrUpdate
@@ -26,6 +39,8 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ResourceViewModel()
         {
             CreateOrUpdate = "Create";
+            CreateOrUpdateMain = "Create";
+            MainTopics = Context.MainTopics.ToList();
         }
 
 
@@ -71,6 +86,12 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
+        private string _createdMainTopicTitle;
+        public string CreatedMainTopicTitle
+        {
+            get { return _createdMainTopicTitle; }
+            set { _createdMainTopicTitle = value; OnPropertyChanged(nameof(CreatedMainTopicTitle)); }
+        }
 
         private string _createdSubTopicTitle;
         public string CreatedSubTopicTitle
@@ -99,6 +120,28 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _createdSubTopicSummary; }
             set { _createdSubTopicSummary = value; OnPropertyChanged(nameof(CreatedSubTopicSummary)); }
         }
+
+
+
+        public ICommand CreateOrUpdateMainTopic => new DelegateCommand<object>(FuncToCall4);
+        private void FuncToCall4(object context)
+        {
+            if (CreateOrUpdateMain == "Create")
+            {
+                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+                {
+                    db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
+                    db.SaveChanges();
+                }
+                MainTopics = Context.MainTopics.ToList();
+                CreatedMainTopicTitle = "";
+            }
+            else if (CreateOrUpdateMain == "Update")
+            {
+               
+            }
+        }
+
 
         public ICommand CreateOrUpdateSubTopic => new DelegateCommand<object>(FuncToCall);
         private async void FuncToCall(object context)
