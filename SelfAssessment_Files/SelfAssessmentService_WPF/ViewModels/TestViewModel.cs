@@ -186,8 +186,13 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5);
         private async void FuncToCall5(object context)
         {
-            IDataService<TestSeries> service = new GenericDataService<TestSeries>();
-            await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
+            TestSeries checkTestSeries = Context.TestSeries.Where(t => t.TestSeriesName == NewSeriesName).FirstOrDefault();
+            if (checkTestSeries == null)
+            {
+                IDataService<TestSeries> service = new GenericDataService<TestSeries>();
+                await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
+            }
+            else { MessageBox.Show("A test series by this name already exists"); }
         }
 
 
