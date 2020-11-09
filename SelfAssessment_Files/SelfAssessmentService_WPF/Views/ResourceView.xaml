@@ -57,6 +57,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
 
                         <TextBox Grid.Row="0" Text="{Binding CreatedMainTopicTitle, UpdateSourceTrigger=PropertyChanged}" 
@@ -75,8 +77,14 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button Grid.Row="1" Content="{Binding CreateOrUpdateMain, UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding CreateOrUpdateMainTopic}">
+                        <Button Grid.Row="1" Content="Create"
+                            Command="{Binding CreateMainTopic}">
+                        </Button>
+                        <Button Grid.Row="2" Content="Update"
+                            Command="{Binding UpdateMainTopic}">
+                        </Button>
+                        <Button Grid.Row="3" Content="Delete"
+                            Command="{Binding DeleteMainTopic}">
                         </Button>
                     </Grid>
                     <Grid Grid.Column="1">

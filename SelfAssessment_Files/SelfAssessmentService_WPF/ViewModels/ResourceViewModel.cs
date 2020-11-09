@@ -23,12 +23,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             set { _mainTopics = value; OnPropertyChanged(nameof(MainTopics)); }
         }
 
-        private string _createOrUpdateMain;
-        public string CreateOrUpdateMain
-        {
-            get { return _createOrUpdateMain; }
-            set { _createOrUpdateMain = value; OnPropertyChanged(nameof(CreateOrUpdateMain)); }
-        }
 
         private string _createOrUpdate;
         public string CreateOrUpdate
@@ -39,7 +33,6 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ResourceViewModel()
         {
             CreateOrUpdate = "Create";
-            CreateOrUpdateMain = "Create";
             MainTopics = Context.MainTopics.ToList();
         }
 
@@ -51,17 +44,21 @@ namespace SelfAssessmentService_WPF.ViewModels
             set
             {
                 _selectedMainTopic = value;
-                SubTopics = Context.SubTopics
+                if (SelectedMainTopic != null)
+                {
+                    SubTopics = Context.SubTopics
                     .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
                     .ToList();
+                    CreatedMainTopicTitle = value.Title;
+                }
             }
         }
 
         private IList<SubTopic> _subTopics;
-        public IList<SubTopic> SubTopics 
+        public IList<SubTopic> SubTopics
         {
             get { return _subTopics; }
-            set { _subTopics = value; OnPropertyChanged(nameof(SubTopics)); } 
+            set { _subTopics = value; OnPropertyChanged(nameof(SubTopics)); }
         }
         public string TopicIntroduction { get; set; }
         public string TopicContent { get; set; }
@@ -123,23 +120,47 @@ namespace SelfAssessmentService_WPF.ViewModels
 
 
 
-        public ICommand CreateOrUpdateMainTopic => new DelegateCommand<object>(FuncToCall4);
+        public ICommand CreateMainTopic => new DelegateCommand<object>(FuncToCall4);
         private void FuncToCall4(object context)
         {
-            if (CreateOrUpdateMain == "Create")
+            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
-                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
-                {
-                    db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
-                    db.SaveChanges();
-                }
-                MainTopics = Context.MainTopics.ToList();
-                CreatedMainTopicTitle = "";
+                db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
+                db.SaveChanges();
             }
-            else if (CreateOrUpdateMain == "Update")
+            MainTopics = Context.MainTopics.ToList();
+            CreatedMainTopicTitle = "";
+
+        }
+
+        public ICommand UpdateMainTopic => new DelegateCommand<object>(FuncToCall5);
+        private void FuncToCall5(object context)
+        {
+            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
             {
-               
+                MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
+                mainTopic.Title = CreatedMainTopicTitle;
+                db.Set<MainTopic>().Update(mainTopic);
+                db.SaveChanges();
             }
+            MainTopics = Context.MainTopics.ToList();
+            CreatedMainTopicTitle = "";
+
+        }
+        
+        public ICommand DeleteMainTopic => new DelegateCommand<object>(FuncToCall6);
+        private void FuncToCall6(object context)
+        {
+            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            {
+                MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
+                db.Set<MainTopic>().Remove(mainTopic);
+                db.SaveChanges();
+            }
+            SelectedMainTopic = null;
+            MainTopics = Context.MainTopics.ToList();
+            CreatedMainTopicTitle = "";
+
         }
 
 
