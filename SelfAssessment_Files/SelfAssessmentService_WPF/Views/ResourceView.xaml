@@ -47,23 +47,23 @@
             </Grid>
 
 
-            <Border Grid.Row="1" Width="350" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Margin="10">
+            <Border Grid.Row="1" Width="400" HorizontalAlignment="Left" BorderBrush="Black" BorderThickness="1" Margin="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="220"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1">
+                        <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="25"/>
                             <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                            <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBox Grid.Row="0" Text="{Binding CreatedMainTopicTitle, UpdateSourceTrigger=PropertyChanged}" 
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Update Main Topic" HorizontalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Text="{Binding CreatedMainTopicTitle, UpdateSourceTrigger=PropertyChanged}" 
                                  Name="mainTitle" TextWrapping="Wrap"/>
-                        <TextBlock Grid.Row="0" IsHitTestVisible="False" Margin="5,0,0,0" 
+                        <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="Main Topic Title" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                             <TextBlock.Style>
@@ -77,29 +77,39 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button Grid.Row="1" Content="Create"
-                            Command="{Binding CreateMainTopic}">
-                        </Button>
-                        <Button Grid.Row="2"
-                            Command="{Binding UpdateMainTopic}">
-                            <materialDesign:PackIcon Foreground="Black" Kind="Spanner" Width="15" Height="20"/>
-                        </Button>
-                        <Button Grid.Row="3"
-                            Command="{Binding DeleteMainTopic}">
-                            <materialDesign:PackIcon Foreground="Black" Kind="Bin" Width="15" Height="20"/>
-                        </Button>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                             <Button Content="Create" Grid.Column="0"
+                                Command="{Binding CreateMainTopic}">
+                             </Button>
+                            <Button Grid.Column="1"
+                                Command="{Binding UpdateMainTopic}">
+                                <materialDesign:PackIcon Foreground="Black" Kind="Spanner" Width="15" Height="20"/>
+                              </Button>
+                            <Button Grid.Column="2"
+                                Command="{Binding DeleteMainTopic}">
+                                <materialDesign:PackIcon Foreground="Black" Kind="Bin" Width="15" Height="20"/>
+                             </Button>
+                        </Grid>
                     </Grid>
-                    <Grid Grid.Column="1">
+                    </Border>
+                    <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1">
+                    <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="25"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-
-                    <TextBox Grid.Row="0" Text="{Binding CreatedSubTopicTitle, UpdateSourceTrigger=PropertyChanged}" Name="title" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="0" IsHitTestVisible="False" Margin="5,0,0,0" 
+                    <TextBlock Grid.Row="0" Text="Update Sub-Topic"  HorizontalAlignment="Center"/>
+                    <TextBox Grid.Row="1" Text="{Binding CreatedSubTopicTitle, UpdateSourceTrigger=PropertyChanged}" Name="title" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="Title" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                         <TextBlock.Style>
@@ -114,8 +124,8 @@
                         </TextBlock.Style>
                     </TextBlock>
 
-                    <TextBox Grid.Row="1" Text="{Binding CreatedSubTopicIntro, UpdateSourceTrigger=PropertyChanged}" Name="intro" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,0" 
+                    <TextBox Grid.Row="2" Text="{Binding CreatedSubTopicIntro, UpdateSourceTrigger=PropertyChanged}" Name="intro" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="2" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="Introduction" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                         <TextBlock.Style>
@@ -129,8 +139,8 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBox Grid.Row="2" Text="{Binding CreatedSubTopicContent, UpdateSourceTrigger=PropertyChanged}" Name="content" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="2" IsHitTestVisible="False" Margin="5,0,0,0" 
+                    <TextBox Grid.Row="3" Text="{Binding CreatedSubTopicContent, UpdateSourceTrigger=PropertyChanged}" Name="content" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="3" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="Main Content" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                         <TextBlock.Style>
@@ -144,8 +154,8 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBox Grid.Row="3" Text="{Binding CreatedSubTopicSummary, UpdateSourceTrigger=PropertyChanged}" Name="summary" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Row="3" IsHitTestVisible="False" Margin="5,0,0,0" 
+                    <TextBox Grid.Row="4" Text="{Binding CreatedSubTopicSummary, UpdateSourceTrigger=PropertyChanged}" Name="summary" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="4" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="Summary" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                         <TextBlock.Style>
@@ -159,10 +169,11 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <Button Grid.Row="4" Content="{Binding CreateOrUpdate}"
+                    <Button Grid.Row="5" FontSize="12" Content="{Binding CreateOrUpdate}"
                             Command="{Binding CreateOrUpdateSubTopic}">
                     </Button>
                 </Grid>
+                </Border>
                 </Grid>
             </Border>
 

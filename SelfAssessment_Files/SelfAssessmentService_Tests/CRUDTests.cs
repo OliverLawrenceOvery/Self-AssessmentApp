@@ -51,10 +51,17 @@ namespace SelfAssessmentService_Tests
                 TestName = "TestName"
             };
 
+
+            Test secondTest = new Test()
+            {
+                TestSeries = testSeries,
+                TestName = "TestName2"
+            };
+
             TestResult testResult = new TestResult()
             {
                 Account = account,
-                Mark = 40,
+                Mark = 30,
                 Test = test
             };
 
@@ -76,6 +83,7 @@ namespace SelfAssessmentService_Tests
                 context.MainTopics.Add(mainTopic);
                 context.SubTopics.Add(subTopic);
                 context.Tests.Add(test);
+                context.Tests.Add(secondTest);
                 context.TestResults.Add(testResult);
                 context.SaveChanges();
             }
@@ -184,10 +192,13 @@ namespace SelfAssessmentService_Tests
         [Test]
         public async Task ReadFunctionalityRetrievesAccountAndUserDataFromDatabase_WhenRetrievingByID()
         {
-            Account retrievedAccount = await accountService.Get(1164);
-
-            Assert.AreEqual("test1", retrievedAccount.User.Username);
-            Assert.AreEqual("olawrenceovery@gmail.com", retrievedAccount.User.Email);
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account getAccountId = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
+                Account retrievedAccount = await accountService.Get(getAccountId.Id);
+                Assert.AreEqual("test2", retrievedAccount.User.Username);
+                Assert.AreEqual("test@gmail.com", retrievedAccount.User.Email);
+            }
         }
 
         [Test]
@@ -214,33 +225,21 @@ namespace SelfAssessmentService_Tests
         {
             User updatedUser = new User()
             {
-                Username = "test1",
-                PasswordHashed = "test1",
+                Username = "test3",
+                PasswordHashed = "test3",
                 Email = "changedemail@gmail.com"
             };
-            await userService.Update(1193, updatedUser);
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
-                User retrievedUpdatedUser = context.Users.Where(u => u.Username == "test1").FirstOrDefault();
-
-                Assert.AreEqual("test1", retrievedUpdatedUser.Username);
-                Assert.AreEqual("changedemail@gmail.com", retrievedUpdatedUser.Email);
+                User getUserId = context.Users.Where(u => u.Username == "test2").FirstOrDefault();
+                await userService.Update(getUserId.Id, updatedUser);
             }
 
-
-            User updatedUserBack = new User()
-            {
-                Username = "test1",
-                PasswordHashed = "test1",
-                Email = "olawrenceovery@gmail.com"
-            };
-            await userService.Update(1193, updatedUserBack);
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
-                User retrievedUpdatedUserBack = context.Users.Where(u => u.Username == "test1").FirstOrDefault();
-
-                Assert.AreEqual("test1", retrievedUpdatedUserBack.Username);
-                Assert.AreEqual("olawrenceovery@gmail.com", retrievedUpdatedUserBack.Email);
+                User retrievedUpdatedUser = context.Users.Where(u => u.Username == "test3").FirstOrDefault();
+                Assert.AreEqual("test3", retrievedUpdatedUser.Username);
+                Assert.AreEqual("changedemail@gmail.com", retrievedUpdatedUser.Email);
             }
         }
         #endregion
@@ -323,6 +322,18 @@ namespace SelfAssessmentService_Tests
                 Assert.AreEqual("NewTest", createdTest.TestName);
             }
         }
+
+        [Test]
+        public async Task CreateNewTest_WithTestNameThatAlreadyExistsInDatabase()
+        {
+            Test test = new Test()
+            {
+                TestName = "TestName"
+            };
+
+            Test createdTest = await testService.CreateNewTest(test, "TestTestSeries");
+            Assert.IsNull(createdTest);
+        }
         #endregion
 
 
@@ -390,12 +401,12 @@ namespace SelfAssessmentService_Tests
 
         #region TestResultService Tests
         [Test]
-        public async Task CreatePersonalTestResult()
+        public async Task CreateUniquePersonalTestResult()
         {
             using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
             {
                 Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
-                Test test = context.Tests.Where(t => t.TestName == "TestName").FirstOrDefault();
+                Test test = context.Tests.Where(t => t.TestName == "TestName2").FirstOrDefault();
                 TestResult testResult = new TestResult() { Mark = 10 };
                 await testResultService.CreatePersonalTestResult(account.Id, test.TestName, testResult);
 
@@ -403,8 +414,48 @@ namespace SelfAssessmentService_Tests
                     .Include(t => t.Account)
                     .ThenInclude(t => t.User)
                     .Where(t => t.Mark == 10)
-                    .Where(t => t.Test.TestName == "TestName").FirstOrDefault();
+                    .Where(t => t.Test.TestName == "TestName2").FirstOrDefault();
                 Assert.AreEqual(10, retrievedTestResult.Mark);
+                Assert.AreEqual("test2", retrievedTestResult.Account.User.Username);
+            }
+        }
+
+        [Test]
+        public async Task CreateTestResult_ForAnAlreadyCompletedTest_WithAHigherMark()
+        {
+
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
+                Test test = context.Tests.Where(t => t.TestName == "TestName").FirstOrDefault();
+                TestResult testResult = new TestResult() { Mark = 40 };
+                await testResultService.CreatePersonalTestResult(account.Id, test.TestName, testResult);
+
+                TestResult retrievedTestResult = context.TestResults
+                    .Include(t => t.Account)
+                    .ThenInclude(t => t.User)
+                    .Where(t => t.Test.TestName == "TestName").FirstOrDefault();
+                Assert.AreEqual(40, retrievedTestResult.Mark);
+                Assert.AreEqual("test2", retrievedTestResult.Account.User.Username);
+            }
+        }
+
+        [Test]
+        public async Task CreateTestResult_ForAnAlreadyCompletedTest_WithALowerMark()
+        {
+
+            using (SelfAssessmentDbContext context = new SelfAssessmentDbContext())
+            {
+                Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
+                Test test = context.Tests.Where(t => t.TestName == "TestName").FirstOrDefault();
+                TestResult testResult = new TestResult() { Mark = 20 };
+                await testResultService.CreatePersonalTestResult(account.Id, test.TestName, testResult);
+
+                TestResult retrievedTestResult = context.TestResults
+                    .Include(t => t.Account)
+                    .ThenInclude(t => t.User)
+                    .Where(t => t.Test.TestName == "TestName").FirstOrDefault();
+                Assert.AreEqual(30, retrievedTestResult.Mark);  //We initialise the test result associated with this test with a mark of 30 in SetUp()
                 Assert.AreEqual("test2", retrievedTestResult.Account.User.Username);
             }
         }
@@ -416,7 +467,7 @@ namespace SelfAssessmentService_Tests
             {
                 Account account = context.Accounts.Where(a => a.User.Username == "test2").FirstOrDefault();
                 List<TestResult> testResults = await testResultService.GetPersonalTestResults(account, "TestTestSeries");
-                Assert.AreEqual(40, testResults[0].Mark);
+                Assert.AreEqual(1, testResults.Count);
             }
         }
         #endregion

@@ -12,8 +12,8 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <WrapPanel Background="White" Grid.Column="0" HorizontalAlignment="Center">
-            <Border BorderBrush="Black" CornerRadius="2" BorderThickness="2">
+        <WrapPanel Grid.Column="0" HorizontalAlignment="Center">
+            <Border BorderBrush="Black" CornerRadius="2" BorderThickness="2" Background="AliceBlue">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -111,7 +111,7 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Column="1" Visibility="{Binding DescriptionVisibility}" Margin="10 0 0 0">
+            <Grid Grid.Column="1" Visibility="{Binding DescriptionVisibility}" Margin="10 0 0 0" Background="AliceBlue">
                 <Border BorderBrush="Black" BorderThickness="2" Padding="5">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -141,10 +141,10 @@
                     
                 </Border>
                 <Border Width="150" Height="200" Padding="5"
-                BorderBrush="Black" BorderThickness="2" Background="White"
+                BorderBrush="Black" BorderThickness="2" Background="AliceBlue"
                     VerticalAlignment="Bottom">
 
-                <Grid Name="quizDescriptionGrid">
+                <Grid Grid.Column="1" Name="quizDescriptionGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="50"/>
@@ -195,23 +195,23 @@
         </WrapPanel>
 
 
-        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="250" 
-                BorderBrush="Black" BorderThickness="2" Background="White" Margin="10 0 0 0" Padding="5">
+        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="250"
+                BorderBrush="Black" BorderThickness="2" Background="AliceBlue" Margin="10 0 0 0" Padding="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Create Question" TextAlignment="Center"/>
-                <TextBox Grid.Row="1" Text="{Binding QuestionTextForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="questionText" TextWrapping="Wrap" Margin="0 0 0 30"/>
-                <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,30" 
+                <TextBox Grid.Row="1" Text="{Binding QuestionTextForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="questionText" TextWrapping="Wrap" Margin="0 0 0 20"/>
+                <TextBlock Grid.Row="1" IsHitTestVisible="False" Margin="5,0,0,20" 
                                        Text="Question Text" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                     <TextBlock.Style>
@@ -225,7 +225,7 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <TextBox Grid.Row="2" Text="{Binding FirstOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option1Text"/>
+                <TextBox Grid.Row="2" Text="{Binding FirstOptionForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="option1Text"  Margin="0,0,0,0" />
                 <TextBlock Grid.Row="2" IsHitTestVisible="False" Margin="5,0,0,0" 
                                        Text="First Option" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
@@ -285,8 +285,8 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <TextBox Grid.Row="6" Text="{Binding CorrectAnswerForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="correctAnswer" />
-                <TextBlock Grid.Row="6" IsHitTestVisible="False" Margin="5,0,0,0" 
+                <TextBox Grid.Row="6" Text="{Binding CorrectAnswerForNewTest, UpdateSourceTrigger=PropertyChanged}" Name="correctAnswer" Margin="0 0 0 0" />
+                <TextBlock Grid.Row="6" IsHitTestVisible="False" Margin="5,20,0,0" 
                                        Text="Correct Answer" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" Foreground="DarkGray">
                     <TextBlock.Style>

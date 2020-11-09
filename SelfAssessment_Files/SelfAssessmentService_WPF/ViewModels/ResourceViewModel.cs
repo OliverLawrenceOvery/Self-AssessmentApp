@@ -48,8 +48,8 @@ namespace SelfAssessmentService_WPF.ViewModels
                 if (SelectedMainTopic != null)
                 {
                     SubTopics = Context.SubTopics
-                    .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
-                    .ToList();
+                         .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
+                         .ToList();
                     CreatedMainTopicTitle = value.Title;
                 }
             }
@@ -130,68 +130,75 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand CreateMainTopic => new DelegateCommand<object>(FuncToCall4);
         private void FuncToCall4(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a name in order to create a main topic."); }
+            else
             {
-                MainTopic checkMainTopic = db.MainTopics.Where(m => m.Title == CreatedMainTopicTitle).FirstOrDefault();
-                if (checkMainTopic == null)
+                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
                 {
-                    db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
-                    db.SaveChanges();
+                    MainTopic checkMainTopic = db.MainTopics.Where(m => m.Title == CreatedMainTopicTitle).FirstOrDefault();
+                    if (checkMainTopic == null)
+                    {
+                        db.MainTopics.Add(new MainTopic() { Title = CreatedMainTopicTitle });
+                        db.SaveChanges();
+                    }
+                    else { MessageBox.Show("This main topic already exists!"); }
                 }
-                else 
-                {
-                    MessageBox.Show("This main topic already exists!");
-                }
+                MainTopics = Context.MainTopics.ToList();
+                CreatedMainTopicTitle = "";
             }
-            MainTopics = Context.MainTopics.ToList();
-            CreatedMainTopicTitle = "";
-
         }
 
         public ICommand UpdateMainTopic => new DelegateCommand<object>(FuncToCall5);
         private void FuncToCall5(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to update a main topic."); }
+            else
             {
-                MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
-                mainTopic.Title = CreatedMainTopicTitle;
-                db.Set<MainTopic>().Update(mainTopic);
-                db.SaveChanges();
+                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+                {
+                    MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
+                    mainTopic.Title = CreatedMainTopicTitle;
+                    db.Set<MainTopic>().Update(mainTopic);
+                    db.SaveChanges();
+                }
+                MainTopics = Context.MainTopics.ToList();
+                CreatedMainTopicTitle = "";
             }
-            MainTopics = Context.MainTopics.ToList();
-            CreatedMainTopicTitle = "";
-
         }
-        
+
         public ICommand DeleteMainTopic => new DelegateCommand<object>(FuncToCall6);
         private void FuncToCall6(object context)
         {
-            using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
+            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to delete a main topic."); }
+            else
             {
-                List<SubTopic> subTopics = db.SubTopics
-                    .Include(s => s.MainTopic)
-                    .Where(m => m.MainTopic.Title == SelectedMainTopic.Title)
-                    .ToList();
-                foreach(SubTopic subTopic in subTopics)
+                using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
                 {
-                    db.SubTopics.Remove(subTopic);
+                    List<SubTopic> subTopics = db.SubTopics
+                        .Include(s => s.MainTopic)
+                        .Where(m => m.MainTopic.Title == SelectedMainTopic.Title)
+                        .ToList();
+                    foreach (SubTopic subTopic in subTopics)
+                    {
+                        db.SubTopics.Remove(subTopic);
+                    }
+                    MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
+                    db.Set<MainTopic>().Remove(mainTopic);
+                    db.SaveChanges();
                 }
-                MainTopic mainTopic = db.MainTopics.Where(m => m.Title == SelectedMainTopic.Title).FirstOrDefault();
-                db.Set<MainTopic>().Remove(mainTopic);
-                db.SaveChanges();
+                SelectedMainTopic = null;
+                MainTopics = Context.MainTopics.ToList();
+                CreatedMainTopicTitle = "";
+                SubTopics = null;
             }
-            SelectedMainTopic = null;
-            MainTopics = Context.MainTopics.ToList();
-            CreatedMainTopicTitle = "";
-            SubTopics = null;
-
         }
 
 
         public ICommand CreateOrUpdateSubTopic => new DelegateCommand<object>(FuncToCall);
         private async void FuncToCall(object context)
         {
-            if (CreateOrUpdate == "Create")
+            if(CreatedSubTopicTitle == "") { MessageBox.Show("You must define a title for this sub-topic."); }
+            else if (CreateOrUpdate == "Create")
             {
                 ISubTopicService service = new SubTopicDataService();
                 await service.CreateNewSubTopic(SelectedMainTopic.Title, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicSummary, CreatedSubTopicContent);

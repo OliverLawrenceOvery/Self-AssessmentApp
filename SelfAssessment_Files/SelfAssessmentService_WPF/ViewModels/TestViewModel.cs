@@ -186,10 +186,7 @@ namespace SelfAssessmentService_WPF.ViewModels
             };
             ITestService service = new TestDataService();
             Test createdTest = await service.CreateNewTest(newTest, SelectedSeriesForNewTest);
-            if (createdTest == null)
-            {
-                MessageBox.Show("A test already exists with this name.");
-            }
+            if (createdTest == null) { MessageBox.Show("A test already exists with this name."); }
             else { AllTests = Context.Tests.Select(q => q.TestName).ToList(); }
         }
 
@@ -205,7 +202,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
                 _ = GetAllTestSeries();
             }
-            else { MessageBox.Show("A test series by this name already exists"); }
+            else { MessageBox.Show("A test series by this name already exists."); }
         }
 
 
@@ -216,7 +213,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             if (SelectedOption == null)
             {
-                MessageBox.Show("Please choose an answer");
+                MessageBox.Show("Please choose an answer.");
                 return;
             }
 
@@ -225,10 +222,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 TotalTestMark += (SelectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
             }
             CurrentQuestion++;
-            if (CurrentQuestion <= SelectedTest.Questions.Count() - 1)
-            {
-                _ = UpdateQuestion();
-            }
+            if (CurrentQuestion <= SelectedTest.Questions.Count() - 1) { _ = UpdateQuestion(); }
             else
             {
                 ListVisibility = Visibility.Visible;
@@ -263,8 +257,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                     QuestionMark = 10,
                 };
                 IQuestionService service = new QuestionDataService();
-                await service.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest
-                    , SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+                await service.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
             }
         }
 

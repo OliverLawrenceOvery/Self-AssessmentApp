@@ -6,25 +6,29 @@
              xmlns:local="clr-namespace:SelfAssessmentService_WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/sunrise.jpg" Stretch="UniformToFill"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Padding="0 30 0 0">
+        <Border Grid.Row="1" Padding="0 30 0 0">
             <Grid HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="65"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Hello" FontSize="24"/>
-                <TextBlock Grid.Column="1" Text="{Binding CurrentAccount.User.Username}" FontSize="24"/>
+                <TextBlock Grid.Column="0" Text="Hello" Foreground="White" FontSize="24"/>
+                <TextBlock Grid.Column="1" Text="{Binding CurrentAccount.User.Username}" Foreground="White" FontSize="24"/>
             </Grid>
         </Border>
-        <Border Grid.Row="1">
+        <Border Grid.Row="2">
             <Grid>
-                <TextBlock Margin="20 0 20 0" TextWrapping="Wrap"
+                <TextBlock Margin="20 0 20 0" TextWrapping="Wrap" Foreground="White" FontSize="16" HorizontalAlignment="Center"
                 Text="This service allows you to customise your learning, by creating your own resource notes and branching off your own tests based on them - all of which is tracked by your own personal profile."/>
             </Grid>
         </Border>
