@@ -58,7 +58,7 @@ namespace SelfAssessmentService_WPF.ViewModels
 
 
 
-
+        #region Visibilities
         private Visibility _listVisibility;
         public Visibility ListVisibility
         {
@@ -86,11 +86,11 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _createQuestionVisibility; }
             set { _createQuestionVisibility = value; OnPropertyChanged(nameof(CreateQuestionVisibility)); }
         }
+        #endregion
 
 
 
-
-
+        #region Take Test functionality
         private string _searchText;
         public string SearchText
         {
@@ -121,7 +121,28 @@ namespace SelfAssessmentService_WPF.ViewModels
             set { _selectedTest = value; OnPropertyChanged(nameof(SelectedTest)); }
         }
 
+        private string _questionName;
+        public string QuestionName
+        {
+            get { return _questionName; }
+            set { _questionName = value; OnPropertyChanged(nameof(QuestionName)); }
+        }
 
+        private string _questionText;
+        public string QuestionText
+        {
+            get { return _questionText; }
+            set { _questionText = value; OnPropertyChanged(nameof(QuestionText)); }
+        }
+
+        private IList<QuestionOption> _questionOptions;
+        public IList<QuestionOption> QuestionOptions
+        {
+            get { return _questionOptions; }
+            set { _questionOptions = value; OnPropertyChanged(nameof(QuestionOptions)); }
+        }
+        public QuestionOption SelectedOption { get; set; }
+        public int TotalTestMark { get; set; } = 0;
 
         public int CurrentQuestion = 0;
 
@@ -153,57 +174,43 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
             }
         }
-
-
-        public ICommand DeleteTest => new DelegateCommand<object>(FuncToCall6);
-        private async void FuncToCall6(object context)
+        public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2);
+        private async void FuncToCall2(object context)
         {
-            if (SelectedTest == null) { MessageBox.Show("Please select a test to delete"); }
+            if (SelectedOption == null)
+            {
+                MessageBox.Show("Please choose an answer.");
+                return;
+            }
+            if (SelectedOption.OptionText == (SelectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
+            {
+                TotalTestMark += (SelectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
+            }
+            CurrentQuestion++;
+            if (CurrentQuestion <= SelectedTest.Questions.Count() - 1) { _ = UpdateQuestion(); }
             else
             {
-                ITestService service = new TestDataService();
-                await service.Delete(SelectedTest.Id);
-                TestList = Context.Tests.Where(q => q.TestName.Contains(SearchText)).ToList();
+                ListVisibility = Visibility.Visible;
+                DescriptionVisibility = Visibility.Visible;
+                MainVisibility = Visibility.Collapsed;
+                CreateQuestionVisibility = Visibility.Visible;
+                CurrentQuestion = 0;
+                TestResult newTestResult = new TestResult() { Mark = TotalTestMark * 100 / SelectedTest.TotalMark };
+                ITestResultService service = new TestResultService();
+                await service.CreatePersonalTestResult(CurrentAccount.Id, SelectedTest.TestName, newTestResult);
             }
         }
+        #endregion
 
 
-    
 
-
-        private string _questionName;
-        public string QuestionName
-        {
-            get { return _questionName; }
-            set { _questionName = value; OnPropertyChanged(nameof(QuestionName)); }
-        }
-
-        private string _questionText;
-        public string QuestionText
-        {
-            get { return _questionText; }
-            set { _questionText = value; OnPropertyChanged(nameof(QuestionText)); }
-        }
-
-        private IList<QuestionOption> _questionOptions;
-        public IList<QuestionOption> QuestionOptions
-        {
-            get { return _questionOptions; }
-            set { _questionOptions = value; OnPropertyChanged(nameof(QuestionOptions)); }
-        }
-
-
-        public QuestionOption SelectedOption { get; set; }
-        public int TotalTestMark { get; set; } = 0;
-
-
+        #region TestSeries functionality
         private string _newSeriesName;
         public string NewSeriesName
         {
             get { return _newSeriesName; }
             set { _newSeriesName = value; OnPropertyChanged(nameof(NewSeriesName)); }
         }
-
 
         public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5);
         private async void FuncToCall5(object context)
@@ -222,8 +229,10 @@ namespace SelfAssessmentService_WPF.ViewModels
                 else { MessageBox.Show("A test series by this name already exists."); }
             }
         }
+        #endregion
 
 
+        #region Customise Test functionality
         private string _newTestName;
         public string NewTestName
         {
@@ -244,8 +253,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _selectedSeriesForNewTest; }
             set { _selectedSeriesForNewTest = value; OnPropertyChanged(nameof(SelectedSeriesForNewTest)); }
         }
-
-
 
         public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4);
         private async void FuncToCall4(object context)
@@ -273,40 +280,23 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
             }
         }
-
-
-
-
-
-        public ICommand NextQuestionCommand => new DelegateCommand<object>(FuncToCall2);
-        private async void FuncToCall2(object context)
+        public ICommand DeleteTest => new DelegateCommand<object>(FuncToCall6);
+        private async void FuncToCall6(object context)
         {
-            if (SelectedOption == null)
-            {
-                MessageBox.Show("Please choose an answer.");
-                return;
-            }
-            if (SelectedOption.OptionText == (SelectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
-            {
-                TotalTestMark += (SelectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
-            }
-            CurrentQuestion++;
-            if (CurrentQuestion <= SelectedTest.Questions.Count() - 1) { _ = UpdateQuestion(); }
+            if (SelectedTest == null) { MessageBox.Show("Please select a test to delete"); }
             else
             {
-                ListVisibility = Visibility.Visible;
-                DescriptionVisibility = Visibility.Visible;
-                MainVisibility = Visibility.Collapsed;
-                CreateQuestionVisibility = Visibility.Visible;
-                CurrentQuestion = 0;
-                TestResult newTestResult = new TestResult() { Mark = TotalTestMark * 100 / SelectedTest.TotalMark };
-                ITestResultService service = new TestResultService();
-                await service.CreatePersonalTestResult(CurrentAccount.Id, SelectedTest.TestName, newTestResult);
+                ITestService service = new TestDataService();
+                await service.Delete(SelectedTest.Id);
+                TestList = Context.Tests.Where(q => q.TestName.Contains(SearchText)).ToList();
             }
         }
+        #endregion
 
 
 
+
+        #region New Question functionality
         private string _questionTextForNewTest;
         public string QuestionTextForNewTest
         {
@@ -327,7 +317,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             get { return _secondOptionForNewTest; }
             set { _secondOptionForNewTest = value; OnPropertyChanged(nameof(SecondOptionForNewTest)); }
         }
-
 
         private string _thirdOptionForNewTest;
         public string ThirdOptionForNewTest
@@ -402,5 +391,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 CorrectAnswerForNewTest = null;
             }
         }
+        #endregion
     }
 }

@@ -22,13 +22,9 @@ namespace SelfAssessmentService_WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            
-         
             IPasswordHasher passwordHasher = new PasswordHasher();
             IAccountService accountService = new AccountDataService();
             IAuthenticationService service = new AuthenticationService(accountService, passwordHasher);
-            //service.Register("test1", "test1", "test1");
-
             IAuthenticator authenticator = new Authenticator(service);
             INavigator navigator = new Navigator(authenticator);
 

@@ -19,6 +19,7 @@ namespace SelfAssessmentService_WPF.ViewModels
     {
         public SelfAssessmentDbContext Context { get; set; } = new SelfAssessmentDbContext();
 
+        //Authenticator is used to get the details of the current account logged in (see the constructor)
         private IAuthenticator _authenticator;
         public Account CurrentAccount { get; set; }
 
@@ -77,8 +78,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
             MaximumY = PersonalTestResults.Count - 1;
         }
-
-
 
 
 

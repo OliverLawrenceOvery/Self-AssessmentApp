@@ -117,6 +117,8 @@ namespace SelfAssessmentService_WPF.ViewModels
             set { _errorMessage = value; OnPropertyChanged(nameof(ErrorMessage)); }
         }
 
+
+
         public ICommand CreateAccountCommand => new DelegateCommand<object>(FuncToCall3);
         private async void FuncToCall3(object context)
         {

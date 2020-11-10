@@ -24,13 +24,6 @@ namespace SelfAssessmentService_WPF.ViewModels
             set { _mainTopics = value; OnPropertyChanged(nameof(MainTopics)); }
         }
 
-
-        private string _createOrUpdate;
-        public string CreateOrUpdate
-        {
-            get { return _createOrUpdate; }
-            set { _createOrUpdate = value; OnPropertyChanged(nameof(CreateOrUpdate)); }
-        }
         public ResourceViewModel()
         {
             CreateOrUpdate = "Create";
@@ -38,6 +31,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         }
 
 
+        #region MainTopic functionality
         private MainTopic _selectedMainTopic;
         public MainTopic SelectedMainTopic
         {
@@ -55,77 +49,12 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
-        private IList<SubTopic> _subTopics;
-        public IList<SubTopic> SubTopics
-        {
-            get { return _subTopics; }
-            set { _subTopics = value; OnPropertyChanged(nameof(SubTopics)); }
-        }
-        public string TopicIntroduction { get; set; }
-        public string TopicContent { get; set; }
-        public string TopicSummary { get; set; }
-
-        private SubTopic _selectedSubTopic;
-        public SubTopic SelectedSubTopic
-        {
-            get { return _selectedSubTopic; }
-            set
-            {
-                _selectedSubTopic = value;
-                if (SelectedSubTopic != null)
-                {
-                    TopicIntroduction = _selectedSubTopic.Introduction;
-                    TopicContent = _selectedSubTopic.Content;
-                    TopicSummary = _selectedSubTopic.Summary;
-                }
-                else
-                {
-                    TopicIntroduction = null;
-                    TopicContent = null;
-                    TopicSummary = null;
-                }
-                OnPropertyChanged(nameof(TopicIntroduction));
-                OnPropertyChanged(nameof(TopicContent));
-                OnPropertyChanged(nameof(TopicSummary));
-            }
-        }
-
         private string _createdMainTopicTitle;
         public string CreatedMainTopicTitle
         {
             get { return _createdMainTopicTitle; }
             set { _createdMainTopicTitle = value; OnPropertyChanged(nameof(CreatedMainTopicTitle)); }
         }
-
-        private string _createdSubTopicTitle;
-        public string CreatedSubTopicTitle
-        {
-            get { return _createdSubTopicTitle; }
-            set { _createdSubTopicTitle = value; OnPropertyChanged(nameof(CreatedSubTopicTitle)); }
-        }
-
-        private string _createdSubTopicIntro;
-        public string CreatedSubTopicIntro
-        {
-            get { return _createdSubTopicIntro; }
-            set { _createdSubTopicIntro = value; OnPropertyChanged(nameof(CreatedSubTopicIntro)); }
-        }
-
-        private string _createdSubTopicContent;
-        public string CreatedSubTopicContent
-        {
-            get { return _createdSubTopicContent; }
-            set { _createdSubTopicContent = value; OnPropertyChanged(nameof(CreatedSubTopicContent)); }
-        }
-
-        private string _createdSubTopicSummary;
-        public string CreatedSubTopicSummary
-        {
-            get { return _createdSubTopicSummary; }
-            set { _createdSubTopicSummary = value; OnPropertyChanged(nameof(CreatedSubTopicSummary)); }
-        }
-
-
 
         public ICommand CreateMainTopic => new DelegateCommand<object>(FuncToCall4);
         private void FuncToCall4(object context)
@@ -192,28 +121,82 @@ namespace SelfAssessmentService_WPF.ViewModels
                 SubTopics = null;
             }
         }
+        #endregion
 
 
-        public ICommand CreateOrUpdateSubTopic => new DelegateCommand<object>(FuncToCall);
-        private async void FuncToCall(object context)
+
+
+
+
+        #region SubTopic functionality
+        private IList<SubTopic> _subTopics;
+        public IList<SubTopic> SubTopics
         {
-            if(CreatedSubTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must define a title for this sub-topic."); }
-            else if(SelectedMainTopic == null) { MessageBox.Show("You must select a main topic for this to belong to."); }
-            else if (CreateOrUpdate == "Create")
+            get { return _subTopics; }
+            set { _subTopics = value; OnPropertyChanged(nameof(SubTopics)); }
+        }
+        public string TopicIntroduction { get; set; }
+        public string TopicContent { get; set; }
+        public string TopicSummary { get; set; }
+
+        private SubTopic _selectedSubTopic;
+        public SubTopic SelectedSubTopic
+        {
+            get { return _selectedSubTopic; }
+            set
             {
-                ISubTopicService service = new SubTopicDataService();
-                await service.CreateNewSubTopic(SelectedMainTopic.Title, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
-                SubTopics = Context.SubTopics
-                        .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
-                        .ToList();
+                _selectedSubTopic = value;
+                if (SelectedSubTopic != null)
+                {
+                    TopicIntroduction = _selectedSubTopic.Introduction;
+                    TopicContent = _selectedSubTopic.Content;
+                    TopicSummary = _selectedSubTopic.Summary;
+                }
+                else
+                {
+                    TopicIntroduction = null;
+                    TopicContent = null;
+                    TopicSummary = null;
+                }
+                OnPropertyChanged(nameof(TopicIntroduction));
+                OnPropertyChanged(nameof(TopicContent));
+                OnPropertyChanged(nameof(TopicSummary));
             }
-            else if (CreateOrUpdate == "Update")
-            {
-                ISubTopicService service = new SubTopicDataService();
-                SubTopic updatedSubTopic = await service.UpdateSubTopic(SelectedSubTopic.Id, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
-                SelectedSubTopic = updatedSubTopic;
-                CreateOrUpdate = "Create";
-            }
+        }
+
+        private string _createOrUpdate;
+        public string CreateOrUpdate
+        {
+            get { return _createOrUpdate; }
+            set { _createOrUpdate = value; OnPropertyChanged(nameof(CreateOrUpdate)); }
+        }
+
+        private string _createdSubTopicTitle;
+        public string CreatedSubTopicTitle
+        {
+            get { return _createdSubTopicTitle; }
+            set { _createdSubTopicTitle = value; OnPropertyChanged(nameof(CreatedSubTopicTitle)); }
+        }
+
+        private string _createdSubTopicIntro;
+        public string CreatedSubTopicIntro
+        {
+            get { return _createdSubTopicIntro; }
+            set { _createdSubTopicIntro = value; OnPropertyChanged(nameof(CreatedSubTopicIntro)); }
+        }
+
+        private string _createdSubTopicContent;
+        public string CreatedSubTopicContent
+        {
+            get { return _createdSubTopicContent; }
+            set { _createdSubTopicContent = value; OnPropertyChanged(nameof(CreatedSubTopicContent)); }
+        }
+
+        private string _createdSubTopicSummary;
+        public string CreatedSubTopicSummary
+        {
+            get { return _createdSubTopicSummary; }
+            set { _createdSubTopicSummary = value; OnPropertyChanged(nameof(CreatedSubTopicSummary)); }
         }
 
 
@@ -230,7 +213,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 CreateOrUpdate = "Update";
             }
         }
-
 
         public ICommand DeleteCommand => new DelegateCommand<object>(FuncToCall3);
         private void FuncToCall3(object context)
@@ -258,5 +240,27 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
         }
 
+        public ICommand CreateOrUpdateSubTopic => new DelegateCommand<object>(FuncToCall);
+        private async void FuncToCall(object context)
+        {
+            if (CreatedSubTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must define a title for this sub-topic."); }
+            else if (SelectedMainTopic == null) { MessageBox.Show("You must select a main topic for this to belong to."); }
+            else if (CreateOrUpdate == "Create")
+            {
+                ISubTopicService service = new SubTopicDataService();
+                await service.CreateNewSubTopic(SelectedMainTopic.Title, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
+                SubTopics = Context.SubTopics
+                        .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
+                        .ToList();
+            }
+            else if (CreateOrUpdate == "Update")
+            {
+                ISubTopicService service = new SubTopicDataService();
+                SubTopic updatedSubTopic = await service.UpdateSubTopic(SelectedSubTopic.Id, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
+                SelectedSubTopic = updatedSubTopic;
+                CreateOrUpdate = "Create";
+            }
+        }
+        #endregion
     }
 }

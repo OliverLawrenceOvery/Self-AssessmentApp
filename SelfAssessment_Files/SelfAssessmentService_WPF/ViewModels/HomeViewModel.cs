@@ -15,7 +15,6 @@ namespace SelfAssessmentService_WPF.ViewModels
         {
             _authenticator = authenticator;
             CurrentAccount = _authenticator.CurrentAccount;
-            
         }
     }
 }
