@@ -5,6 +5,15 @@ Self-Assessment Revision Aid using Entity Framework and WPF
 ## Project Goal
 The goal of this project is to create a service that allows the user to customise their own revision. It will offer a means for storing personalised revision notes and creating associated multiple choice questions for self-assessment purposes.
 
+
+## Project Definition of Done
+
+- [ ] All user stories are marked as completed and tested.
+- [ ] All unit tests pass.
+- [ ] The end product is pushed to GitHub by 14:00 on 10/11/2020
+- [ ] The documentation is fully realised, with a comprehensive README describing sprint progress and outcomes.
+- [ ] The end product is reviewed and approved.
+
 ## Sprint 1
 
 ![Screenshot](/README_Images/sprint1start.png)
@@ -77,7 +86,11 @@ In summary, this sprint focused primarily on investigating the edge cases and er
 
 The undertaking and scope of this project was hugely rewarding for my understanding of object-oriented programming and project management. Not only did it enable me to apply my already existing knowledge to creating a resource that I may end up iterating upon and using in the future, but also gave me a valuable insight into the SCRUM process of project development and to this idea of letting the project board and testing drive a products creation. 
 
+## What have I learned?
 Specific to C# functionality, this project has solidifed my understanding of the SOLID principles and how they should be adhered to in practice. For example, I observed the huge benefit in subscribing to the principle of Dependency Inversion by creating a dependency on a hierachal structure and interfaces rather than concrete class definitions, both in the form of greater code extendability and flexibility, and the benefit it had on unit testing my CRUD and authentication services. Specific to Unit Testing, I learnt about and implemented Moq testing which was used for my authentication service testing, because of the dependency of my IAuthenticationService interface on IPasswordHasher and IAccountService interfaces. This greatly improved the ease at which I was able to test this service, because Moq testing allowed me to create mock objects to represent these interfaces depended upon.
 
-Moving forward and for future projects, I need to place more of an emphasis on unit testing and test driven development early on in the project: my initial unit testing occured towards the end of Sprint 1 after much of the CRUD functionality was already implemented, whereas ideally it should be the other way around such that the code is more robust due to it being written in response to test cases (which are in direct response to the written user stories). Ultimately, the user stories are satisfied and user requirements are met when the appropriate testing is done and passed and so this dependency of the code on the tests rather than vice versa is something that I need to bare in mind moving forward. Additionally, I should gain more of an awareness on time constraints and not attempting to create too much functionality and too many tasks to achieve for a given sprint. For example, Sprint 2 was where the bulk of my GUI and CRUD service linking functionality was developed and there was very little spare time allocated for that sprint for the scenario where any serious bugs/errors were encountered. Fortunately, all of the bugs and errors that appeared during that sprint although potentially major in severity were relatively easy to replicate and fix. However, the risk was still there that a lot of the functionality that I wanted to implement in that sprint could have been delayed potentially until the last sprint due to one severe bug appearing. In hindsight, I should have divided the GUI work more effectively and equally between Sprint 2 and 3
+### What would I do differently moving forward?
+Moving forward and for future projects, I need to place more of an emphasis on unit testing and test driven development early on in the project: my initial unit testing occured towards the end of Sprint 1 after much of the CRUD functionality was already implemented, whereas ideally it should be the other way around such that the code is more robust due to it being written in response to test cases (which are in direct response to the written user stories). Ultimately, the user stories are satisfied and user requirements are met when the appropriate testing is done and passed and so this dependency of the code on the tests rather than vice versa is something that I need to bare in mind moving forward. 
+
+Additionally, I should gain more of an awareness of time constraints and not attempting to create too much functionality and too many tasks to achieve for a given sprint. For example, Sprint 2 was where the bulk of my GUI and CRUD service linking functionality was developed and there was very little spare time allocated for that sprint for the scenario where any serious bugs/errors were encountered. Fortunately, all of the bugs and errors that appeared during that sprint although potentially major in severity were relatively easy to replicate and fix. However, the risk was still there that a lot of the functionality that I wanted to implement in that sprint could have been delayed potentially until the last sprint due to one severe bug appearing. In hindsight, I should have divided the GUI work more effectively and equally between Sprint 2 and 3
 and this something I will bare strongly in mind moving forward.
