@@ -105,5 +105,19 @@
       <Property Name="User" />
     </ShowAsAssociation>
   </Class>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.IDataService&lt;T&gt;">
+    <Position X="8.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Services\CRUD Services\IDataService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.IAccountService" Collapsed="true">
+    <Position X="5.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\CRUD Services\IAccountService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

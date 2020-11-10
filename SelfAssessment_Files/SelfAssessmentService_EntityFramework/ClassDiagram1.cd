@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SelfAssessmentService_EntityFramework.CRUD_Services.AccountDataService">
+    <Position X="8.75" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="SelfAssessmentService_EntityFramework.CRUD_Services.GenericDataService&lt;T&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="7" Y="3.5" />
+        <Point X="7" Y="3.125" />
+        <Point X="8.125" Y="3.125" />
+        <Point X="8.125" Y="4.242" />
+        <Point X="9" Y="4.242" />
+        <Point X="9" Y="3.867" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAACAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>CRUD Services\AccountDataService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.582" />
+  </Class>
+  <Class Name="SelfAssessmentService_EntityFramework.CRUD_Services.GenericDataService&lt;T&gt;">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>CRUD Services\GenericDataService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.638" />
+  </Class>
+  <Class Name="SelfAssessmentService_EntityFramework.CRUD_Services.QuestionDataService">
+    <Position X="3" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>CRUD Services\QuestionDataService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.478" />
+  </Class>
+  <Class Name="SelfAssessmentService_EntityFramework.CRUD_Services.TestDataService">
+    <Position X="11.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAEAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CRUD Services\TestDataService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="1.055" />
+  </Class>
+  <Class Name="SelfAssessmentService_EntityFramework.CRUD_Services.TestResultService">
+    <Position X="0.5" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CRUD Services\TestResultService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.424" />
+  </Class>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.IAccountService">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.IDataService&lt;T&gt;">
+    <Position X="6.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.IQuestionService">
+    <Position X="3" Y="4.75" Width="2.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.ITestService">
+    <Position X="11.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="SelfAssessmentService_Domain.Services.CRUD_Services.ITestResultService">
+    <Position X="0.5" Y="4.75" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
