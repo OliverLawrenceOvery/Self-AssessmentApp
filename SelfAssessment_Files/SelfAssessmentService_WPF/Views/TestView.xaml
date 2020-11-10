@@ -96,7 +96,7 @@
                         </Grid.RowDefinitions>
                         <TextBox Name="questionName" Padding="2" Grid.Row="0" Text="{Binding QuestionName}" 
                                  HorizontalContentAlignment="Center"/>
-                        <TextBox Name="questionContent" Padding="3" Grid.Row="1" Text="{Binding QuestionText}"/>
+                        <TextBox Name="questionContent" Padding="3" Grid.Row="1" Text=""/>
                         <Grid Grid.Row="2">
                             <ListView Name="lstRequests3" Padding="3" HorizontalAlignment="Left" 
                             VerticalAlignment="Top" ItemsSource="{Binding QuestionOptions}"
