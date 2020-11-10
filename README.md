@@ -51,6 +51,10 @@ Finally, the test view needed to be fully customisable with regards to the abili
 ### Sprint Retrospective
 In summary, this sprint was noticably more intensive than the first, with the implementation of the required GUI functionality presenting numerous issues over the course of the development. It was perhaps naive to come into this sprint expecting it to go completely smoothly, and fortunately all the issues that presented themselves were fixed in a manner that did not overly convolute the code, with solutions that did not cause a cascade of subsequent issues/errors. SOLID principles were maintained throughout; for example Dependency Inversion was adhered to by a complete reliance on interfaces over classes - evidenced for example in the view model constructors, where interfaces for the authenticator and navigator were passed in as opposed to class instances. The Interface Segregation Principle was adhered through the addition of some new test services with custom CRUD methods, for example to create a new test result for a specific test and user, and to retrieve all of the test results for a specific user and specific test series. The backbone of these CRUD services were interfaces for each set of customised CRUD methods, and as such multiple interfaces were used rather than a reliance on a single large interface.
 
+![Screenshot](/README_Images/profileview.png)
+![Screenshot](/README_Images/resourcesview.png)
+![Screenshot](/README_Images/testsview.png)
+
 ![Screenshot](/README_Images/sprint2end.png)
 
 ## Sprint 3
