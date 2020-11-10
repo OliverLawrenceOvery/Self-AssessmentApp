@@ -3,7 +3,7 @@ Self-Assessment Revision Aid using Entity Framework and WPF
 
 
 ## Project Goal
-The goal of this project is to create a service that allows the user to customise their own revision. It will offer a means for storing personalised revision notes and creating associated multiple choice questions for self-assessment purposes.
+The goal of this project is to create a service that allows the user to customise their own revision. It will offer a means for storing, updating and deleting personalised revision notes and creating associated multiple choice questions for self-assessment purposes. This will all be tracked by a personal profile, with a means to graphically display test results.
 
 
 ## Project Definition of Done
