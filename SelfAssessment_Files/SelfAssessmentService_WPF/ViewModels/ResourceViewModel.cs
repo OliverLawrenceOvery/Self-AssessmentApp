@@ -80,9 +80,9 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
                 else
                 {
-                    TopicIntroduction = "";
-                    TopicContent = "";
-                    TopicSummary = "";
+                    TopicIntroduction = null;
+                    TopicContent = null;
+                    TopicSummary = null;
                 }
                 OnPropertyChanged(nameof(TopicIntroduction));
                 OnPropertyChanged(nameof(TopicContent));
@@ -130,7 +130,7 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand CreateMainTopic => new DelegateCommand<object>(FuncToCall4);
         private void FuncToCall4(object context)
         {
-            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a name in order to create a main topic."); }
+            if (CreatedMainTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must enter a name in order to create a main topic."); }
             else
             {
                 using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
@@ -144,14 +144,14 @@ namespace SelfAssessmentService_WPF.ViewModels
                     else { MessageBox.Show("This main topic already exists!"); }
                 }
                 MainTopics = Context.MainTopics.ToList();
-                CreatedMainTopicTitle = "";
+                CreatedMainTopicTitle = null;
             }
         }
 
         public ICommand UpdateMainTopic => new DelegateCommand<object>(FuncToCall5);
         private void FuncToCall5(object context)
         {
-            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to update a main topic."); }
+            if (CreatedMainTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to update a main topic."); }
             else
             {
                 using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
@@ -162,14 +162,14 @@ namespace SelfAssessmentService_WPF.ViewModels
                     db.SaveChanges();
                 }
                 MainTopics = Context.MainTopics.ToList();
-                CreatedMainTopicTitle = "";
+                CreatedMainTopicTitle = null;
             }
         }
 
         public ICommand DeleteMainTopic => new DelegateCommand<object>(FuncToCall6);
         private void FuncToCall6(object context)
         {
-            if (CreatedMainTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to delete a main topic."); }
+            if (CreatedMainTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must enter a valid name in order to delete a main topic."); }
             else
             {
                 using (SelfAssessmentDbContext db = new SelfAssessmentDbContext())
@@ -188,7 +188,7 @@ namespace SelfAssessmentService_WPF.ViewModels
                 }
                 SelectedMainTopic = null;
                 MainTopics = Context.MainTopics.ToList();
-                CreatedMainTopicTitle = "";
+                CreatedMainTopicTitle = null;
                 SubTopics = null;
             }
         }
@@ -197,11 +197,12 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand CreateOrUpdateSubTopic => new DelegateCommand<object>(FuncToCall);
         private async void FuncToCall(object context)
         {
-            if(CreatedSubTopicTitle == "") { MessageBox.Show("You must define a title for this sub-topic."); }
+            if(CreatedSubTopicTitle == null || CreatedSubTopicTitle == "") { MessageBox.Show("You must define a title for this sub-topic."); }
+            else if(SelectedMainTopic == null) { MessageBox.Show("You must select a main topic for this to belong to."); }
             else if (CreateOrUpdate == "Create")
             {
                 ISubTopicService service = new SubTopicDataService();
-                await service.CreateNewSubTopic(SelectedMainTopic.Title, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicSummary, CreatedSubTopicContent);
+                await service.CreateNewSubTopic(SelectedMainTopic.Title, CreatedSubTopicTitle, CreatedSubTopicIntro, CreatedSubTopicContent, CreatedSubTopicSummary);
                 SubTopics = Context.SubTopics
                         .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
                         .ToList();
@@ -219,30 +220,42 @@ namespace SelfAssessmentService_WPF.ViewModels
         public ICommand UpdateCommand => new DelegateCommand<object>(FuncToCall2);
         private void FuncToCall2(object context)
         {
-            CreatedSubTopicTitle = SelectedSubTopic.Title;
-            CreatedSubTopicIntro = TopicIntroduction;
-            CreatedSubTopicContent = TopicContent;
-            CreatedSubTopicSummary = TopicSummary;
-            CreateOrUpdate = "Update";
+            if (SelectedSubTopic == null) { MessageBox.Show("You must select a sub-topic to update"); }
+            else
+            {
+                CreatedSubTopicTitle = SelectedSubTopic.Title;
+                CreatedSubTopicIntro = TopicIntroduction;
+                CreatedSubTopicContent = TopicContent;
+                CreatedSubTopicSummary = TopicSummary;
+                CreateOrUpdate = "Update";
+            }
         }
 
 
         public ICommand DeleteCommand => new DelegateCommand<object>(FuncToCall3);
         private void FuncToCall3(object context)
         {
-            using (SelfAssessmentDbContext newContext = new SelfAssessmentDbContext())
+            if (SelectedSubTopic == null) { MessageBox.Show("You must select a sub-topic to delete"); }
+            else
             {
-                SubTopic retrievedSubTopic = newContext.SubTopics.Where(st => st.Id == SelectedSubTopic.Id).FirstOrDefault();
-                newContext.SubTopics.Remove(retrievedSubTopic);
-                newContext.SaveChanges();
+                using (SelfAssessmentDbContext newContext = new SelfAssessmentDbContext())
+                {
+                    SubTopic retrievedSubTopic = newContext.SubTopics.Where(st => st.Id == SelectedSubTopic.Id).FirstOrDefault();
+                    newContext.SubTopics.Remove(retrievedSubTopic);
+                    newContext.SaveChanges();
+                }
+                SubTopics = Context.SubTopics.Include(m => m.MainTopic)
+                        .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
+                        .ToList();
+                SelectedSubTopic = null;
+                TopicIntroduction = null;
+                TopicContent = null;
+                TopicSummary = null;
+                CreatedSubTopicTitle = null;
+                CreatedSubTopicIntro = null;
+                CreatedSubTopicContent = null;
+                CreatedSubTopicSummary = null;
             }
-            SubTopics = Context.SubTopics.Include(m => m.MainTopic)
-                    .Where(r => r.MainTopic.Id == SelectedMainTopic.Id)
-                    .ToList();
-            SelectedSubTopic = null;
-            TopicIntroduction = "";
-            TopicContent = "";
-            TopicSummary = "";
         }
 
     }

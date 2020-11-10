@@ -108,7 +108,7 @@
                                 </ListView.Resources>
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Width="170" 
+                                        <GridViewColumn Width="auto" 
                                     DisplayMemberBinding="{Binding OptionText}"/>
                                     </GridView>
                                 </ListView.View>
@@ -206,7 +206,7 @@
         </WrapPanel>
 
 
-        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="250"
+        <Border Visibility="{Binding CreateQuestionVisibility}" Grid.Column="1" Width="250" Height="auto"
                 BorderBrush="Black" BorderThickness="2" Background="AliceBlue" Margin="10 0 0 0" Padding="5">
             <Grid>
                 <Grid.RowDefinitions>

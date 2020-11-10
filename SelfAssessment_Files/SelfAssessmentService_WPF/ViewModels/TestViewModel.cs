@@ -124,42 +124,53 @@ namespace SelfAssessmentService_WPF.ViewModels
 
 
         public int CurrentQuestion = 0;
+
         public ICommand StartTestCommand => new DelegateCommand<object>(FuncToCall);
-        private async void FuncToCall(object context)
+        private void FuncToCall(object context)
         {
             _ = UpdateQuestion();
         }
-
         public async Task UpdateQuestion()
         {
-            IQuestionService questionService = new QuestionDataService();
-            ITestService testService = new TestDataService();
-            Test selectedTest = await testService.Get(SelectedTest.Id);
-            IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(selectedTest.TestName);
-
-            if (selectedTest.TotalMark != selectedTestQuestions.Select(q => q.QuestionMark).Sum()) { MessageBox.Show("This test needs more questions in order to be eligible to be taken."); }
+            if (SelectedTest == null) { MessageBox.Show("Please select a test to take"); }
             else
             {
-                SelectedTest = selectedTest;
-                QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
-                QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
-                ListVisibility = Visibility.Collapsed;
-                DescriptionVisibility = Visibility.Collapsed;
-                MainVisibility = Visibility.Visible;
-                CreateQuestionVisibility = Visibility.Collapsed;
+                IQuestionService questionService = new QuestionDataService();
+                ITestService testService = new TestDataService();
+                Test selectedTest = await testService.Get(SelectedTest.Id);
+                IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(selectedTest.TestName);
+                if (selectedTest.TotalMark != selectedTestQuestions.Select(q => q.QuestionMark).Sum()) { MessageBox.Show("This test needs more questions in order to be eligible to be taken."); }
+                else
+                {
+                    SelectedTest = selectedTest;
+                    QuestionName = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                    QuestionText = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionText;
+                    QuestionOptions = (selectedTest.Questions.ToList())[CurrentQuestion].QuestionOptions.ToList();
+                    ListVisibility = Visibility.Collapsed;
+                    DescriptionVisibility = Visibility.Collapsed;
+                    MainVisibility = Visibility.Visible;
+                    CreateQuestionVisibility = Visibility.Collapsed;
+                }
             }
         }
+
 
         public ICommand DeleteTest => new DelegateCommand<object>(FuncToCall6);
         private async void FuncToCall6(object context)
         {
-            ITestService service = new TestDataService();
-            await service.Delete(SelectedTest.Id);
-            TestList = Context.Tests.Where(q => q.TestName.Contains(SearchText)).ToList();
+            if (SelectedTest == null) { MessageBox.Show("Please select a test to delete"); }
+            else
+            {
+                ITestService service = new TestDataService();
+                await service.Delete(SelectedTest.Id);
+                TestList = Context.Tests.Where(q => q.TestName.Contains(SearchText)).ToList();
+            }
         }
 
-        
+
+    
+
+
         private string _questionName;
         public string QuestionName
         {
@@ -184,42 +195,85 @@ namespace SelfAssessmentService_WPF.ViewModels
 
         public QuestionOption SelectedOption { get; set; }
         public int TotalTestMark { get; set; } = 0;
-        public string NewTestName { get; set; }
-        public int NewTestMark { get; set; }
-        public string SelectedSeriesForNewTest { get; set; }
+
+
+        private string _newSeriesName;
+        public string NewSeriesName
+        {
+            get { return _newSeriesName; }
+            set { _newSeriesName = value; OnPropertyChanged(nameof(NewSeriesName)); }
+        }
+
+
+        public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5);
+        private async void FuncToCall5(object context)
+        {
+            if (NewSeriesName == null || NewSeriesName == "") { MessageBox.Show("You must enter a series name."); }
+            else
+            {
+                TestSeries checkTestSeries = Context.TestSeries.Where(t => t.TestSeriesName == NewSeriesName).FirstOrDefault();
+                if (checkTestSeries == null)
+                {
+                    IDataService<TestSeries> service = new GenericDataService<TestSeries>();
+                    await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
+                    _ = GetAllTestSeries();
+                    NewSeriesName = null;
+                }
+                else { MessageBox.Show("A test series by this name already exists."); }
+            }
+        }
+
+
+        private string _newTestName;
+        public string NewTestName
+        {
+            get { return _newTestName; }
+            set { _newTestName = value; OnPropertyChanged(nameof(NewTestName)); }
+        }
+
+        private int _newTestMark;
+        public int NewTestMark
+        {
+            get { return _newTestMark; }
+            set { _newTestMark = value; OnPropertyChanged(nameof(NewTestMark)); }
+        }
+
+        private string _selectedSeriesForNewTest;
+        public string SelectedSeriesForNewTest
+        {
+            get { return _selectedSeriesForNewTest; }
+            set { _selectedSeriesForNewTest = value; OnPropertyChanged(nameof(SelectedSeriesForNewTest)); }
+        }
 
 
 
         public ICommand CreateNewTestCommand => new DelegateCommand<object>(FuncToCall4);
         private async void FuncToCall4(object context)
         {
-            Test newTest = new Test()
+            if (NewTestMark == 0) { MessageBox.Show("Please enter a total mark for this test"); }
+            else if (NewTestName == null || NewTestName == "") { MessageBox.Show("Please enter a test name"); }
+            else if (SelectedSeriesForNewTest == null || SelectedSeriesForNewTest == "") { MessageBox.Show("Please select a test series to assign this test to"); }
+            else
             {
-                TestName = NewTestName,
-                TotalMark = NewTestMark,
-            };
+                Test newTest = new Test()
+                {
+                    TestName = NewTestName,
+                    TotalMark = NewTestMark,
+                };
 
-            ITestService testService = new TestDataService();
-            Test createdTest = await testService.CreateNewTest(newTest, SelectedSeriesForNewTest);
-            if (createdTest == null) { MessageBox.Show("A test already exists with this name."); }
-            else { AllTests = Context.Tests.Select(q => q.TestName).ToList(); }
-
-        }
-
-        public string NewSeriesName { get; set; }
-
-        public ICommand CreateNewSeriesCommand => new DelegateCommand<object>(FuncToCall5);
-        private async void FuncToCall5(object context)
-        {
-            TestSeries checkTestSeries = Context.TestSeries.Where(t => t.TestSeriesName == NewSeriesName).FirstOrDefault();
-            if (checkTestSeries == null)
-            {
-                IDataService<TestSeries> service = new GenericDataService<TestSeries>();
-                await service.Create(new TestSeries() { TestSeriesName = NewSeriesName });
-                _ = GetAllTestSeries();
+                ITestService testService = new TestDataService();
+                Test createdTest = await testService.CreateNewTest(newTest, SelectedSeriesForNewTest);
+                if (createdTest == null) { MessageBox.Show("A test already exists with this name."); }
+                else
+                {
+                    AllTests = Context.Tests.Select(q => q.TestName).ToList();
+                    NewTestName = null;
+                    NewTestMark = 0;
+                    SelectedSeriesForNewTest = null;
+                }
             }
-            else { MessageBox.Show("A test series by this name already exists."); }
         }
+
 
 
 
@@ -232,7 +286,6 @@ namespace SelfAssessmentService_WPF.ViewModels
                 MessageBox.Show("Please choose an answer.");
                 return;
             }
-
             if (SelectedOption.OptionText == (SelectedTest.Questions.ToList())[CurrentQuestion].CorrectAnswer)
             {
                 TotalTestMark += (SelectedTest.Questions.ToList())[CurrentQuestion].QuestionMark;
@@ -253,42 +306,101 @@ namespace SelfAssessmentService_WPF.ViewModels
         }
 
 
-        public string QuestionTextForNewTest { get; set; }
-        public string FirstOptionForNewTest { get; set; }
-        public string SecondOptionForNewTest { get; set; }
-        public string ThirdOptionForNewTest { get; set; }
-        public string FourthOptionForNewTest { get; set; }
-        public string SelectedTestForNewQuestion { get; set; }
-        public string CorrectAnswerForNewTest { get; set; }
+
+        private string _questionTextForNewTest;
+        public string QuestionTextForNewTest
+        {
+            get { return _questionTextForNewTest; }
+            set { _questionTextForNewTest = value; OnPropertyChanged(nameof(QuestionTextForNewTest)); }
+        }
+
+        private string _firstOptionForNewTest;
+        public string FirstOptionForNewTest
+        {
+            get { return _firstOptionForNewTest; }
+            set { _firstOptionForNewTest = value; OnPropertyChanged(nameof(FirstOptionForNewTest)); }
+        }
+
+        private string _secondOptionForNewTest;
+        public string SecondOptionForNewTest
+        {
+            get { return _secondOptionForNewTest; }
+            set { _secondOptionForNewTest = value; OnPropertyChanged(nameof(SecondOptionForNewTest)); }
+        }
+
+
+        private string _thirdOptionForNewTest;
+        public string ThirdOptionForNewTest
+        {
+            get { return _thirdOptionForNewTest; }
+            set { _thirdOptionForNewTest = value; OnPropertyChanged(nameof(ThirdOptionForNewTest)); }
+        }
+
+        private string _fourthOptionForNewTest;
+        public string FourthOptionForNewTest
+        {
+            get { return _fourthOptionForNewTest; }
+            set { _fourthOptionForNewTest = value; OnPropertyChanged(nameof(FourthOptionForNewTest)); }
+        }
+
+        private string _selectedTestForNewQuestion;
+        public string SelectedTestForNewQuestion
+        {
+            get { return _selectedTestForNewQuestion; }
+            set { _selectedTestForNewQuestion = value; OnPropertyChanged(nameof(SelectedTestForNewQuestion)); }
+        }
+
+        private string _correctAnswerForNewTest;
+        public string CorrectAnswerForNewTest
+        {
+            get { return _correctAnswerForNewTest; }
+            set { _correctAnswerForNewTest = value; OnPropertyChanged(nameof(CorrectAnswerForNewTest)); }
+        }
 
         public ICommand CreateNewQuestionCommand => new DelegateCommand<object>(FuncToCall3);
         private async void FuncToCall3(object context)
         {
-            Question newQuestion = new Question()
+            if (QuestionTextForNewTest == null || QuestionTextForNewTest == "") { MessageBox.Show("Please populate the question text field"); }
+            else if (FirstOptionForNewTest == null || FirstOptionForNewTest == "") { MessageBox.Show("Please populate the first option text field"); }
+            else if (SecondOptionForNewTest == null || SecondOptionForNewTest == "") { MessageBox.Show("Please populate the second option text field"); }
+            else if (ThirdOptionForNewTest == null || ThirdOptionForNewTest == "") { MessageBox.Show("Please populate the third option text field"); }
+            else if (FourthOptionForNewTest == null || FourthOptionForNewTest == "") { MessageBox.Show("Please populate the fourth option text field"); }
+            else if (SelectedTestForNewQuestion == null || SelectedTestForNewQuestion == "") { MessageBox.Show("Please select an associated test for this question"); }
+            else if (CorrectAnswerForNewTest == null || CorrectAnswerForNewTest == "") { MessageBox.Show("Please populate the correct answer text field"); }
+            else
             {
-                QuestionText = QuestionTextForNewTest,
-                CorrectAnswer = CorrectAnswerForNewTest,
-                QuestionMark = 10,
-            };
+                Question newQuestion = new Question()
+                {
+                    QuestionText = QuestionTextForNewTest,
+                    CorrectAnswer = CorrectAnswerForNewTest,
+                    QuestionMark = 10,
+                };
 
-            IQuestionService questionService = new QuestionDataService();
-            ITestService testService = new TestDataService();
-            IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(SelectedTestForNewQuestion);
+                IQuestionService questionService = new QuestionDataService();
+                ITestService testService = new TestDataService();
+                IEnumerable<Question> selectedTestQuestions = await questionService.GetAllQuestionsForGivenTestName(SelectedTestForNewQuestion);
 
-            if (selectedTestQuestions.Count() > 0)
-            {
-                if (selectedTestQuestions.ToList()[0].Test.TotalMark == selectedTestQuestions.Select(q => q.QuestionMark).Sum())
-                { MessageBox.Show("This test cannot support any more questions (maximum score reached)."); }
+                if (selectedTestQuestions.Count() > 0)
+                {
+                    if (selectedTestQuestions.ToList()[0].Test.TotalMark == selectedTestQuestions.Select(q => q.QuestionMark).Sum())
+                    { MessageBox.Show("This test cannot support any more questions (maximum score reached)."); }
+                    else
+                    {
+                        await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+                    }
+                }
                 else
                 {
                     await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
                 }
-            }
-            else
-            {
-                await questionService.CreateNewQuestion(newQuestion, SelectedTestForNewQuestion, FirstOptionForNewTest, SecondOptionForNewTest, ThirdOptionForNewTest, FourthOptionForNewTest);
+                QuestionTextForNewTest = null;
+                FirstOptionForNewTest = null;
+                SecondOptionForNewTest = null;
+                ThirdOptionForNewTest = null;
+                FourthOptionForNewTest = null;
+                SelectedTestForNewQuestion = null;
+                CorrectAnswerForNewTest = null;
             }
         }
-
     }
 }

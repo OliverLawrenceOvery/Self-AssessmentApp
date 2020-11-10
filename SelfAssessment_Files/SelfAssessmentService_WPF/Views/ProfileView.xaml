@@ -80,8 +80,8 @@
                     <oxy1:LinearAxis Position="Left" Minimum="0" Maximum="100" />
                 </oxy1:Plot.Axes>
                 <!--<oxy1:Plot.Annotations>
-                    <oxy1:PointAnnotation X="5" Y="6" Text="Hello"  Visibility="Visible" StrokeThickness="3" 
-                                 Stroke="Black" Size="14">
+                    <oxy1:PointAnnotation X="{Binding XPoints, UpdateSourceTrigger=PropertyChanged}" Y="{Binding YPoints, UpdateSourceTrigger=PropertyChanged}" Text="Hello"  Visibility="Visible" StrokeThickness="3" 
+                                 Stroke="Black" Size="5">
 
                     </oxy1:PointAnnotation>
                 </oxy1:Plot.Annotations>-->

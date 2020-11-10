@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using SelfAssessmentService_Domain.Models;
 using SelfAssessmentService_Domain.Services.CRUD_Services;
@@ -76,6 +77,10 @@ namespace SelfAssessmentService_WPF.ViewModels
             }
             MaximumY = PersonalTestResults.Count - 1;
         }
+
+
+
+
 
         private int _maximumY;
         public int MaximumY
